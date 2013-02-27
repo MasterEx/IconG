@@ -1,0 +1,14 @@
+in priority order:
+ * connect the boxes with lines
+ * check when a pressed button should be unset
+ * fix entry value and slider
+ * create a list with the order of the actions - should descern what buttons are input, what output and what is their role
+ * exec the commands
+ * go to the "invisible" by scrolling
+ * use arrows to indicate more boxes
+ * delete boxes by dragging them to a trash icon
+ * zoom in/zoom out
+ * test test test
+ * more test
+ * implement more features
+ * reapeat two previous dots
