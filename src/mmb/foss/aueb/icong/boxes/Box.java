@@ -1,13 +1,18 @@
 package mmb.foss.aueb.icong.boxes;
 
+import java.io.InputStream;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 
 public class Box {
 
+	private Context context;
 	protected BitmapDrawable image = null;
-	protected int zoom = 100;
+	Bitmap originalBitmap;
+	protected double zoom = 1;
 	protected int width, height;
 	protected int x = 0, y = 0;
 	protected int[][] buttonX;
@@ -16,7 +21,14 @@ public class Box {
 
 	public Box(Context context, int id) {
 		// TODO Auto-generated constructor stub
-		image = (BitmapDrawable) context.getResources().getDrawable(id);
+		this.context = context;
+		// Nasty solution to keep original bitmap size. Any better idea?
+		InputStream is = context.getResources().openRawResource(id);
+		originalBitmap = BitmapFactory.decodeStream(is);
+		image = new BitmapDrawable(context.getResources(),
+				Bitmap.createScaledBitmap(originalBitmap,
+						originalBitmap.getWidth(), originalBitmap.getHeight(),
+						true));
 		width = image.getBitmap().getWidth();
 		height = image.getBitmap().getHeight();
 	}
@@ -31,11 +43,14 @@ public class Box {
 	public int isButton(int x, int y) {
 		if (buttonX != null) {
 			for (int i = 0; i < buttonX.length; i++) {
-				System.out.println("IN BUTTON " + x + " " + y + " "
-						+ (buttonX[i][0] + x) + " " + buttonX[i][1] + x + " ");
-				if (x >= buttonX[i][0] + this.x && x <= buttonX[i][1] + this.x
-						&& y >= buttonY[i][0] + this.y
-						&& y <= buttonY[i][1] + this.y) {
+				int bx0 = (int) (buttonX[i][0] * zoom);
+				int bx1 = (int) (buttonX[i][1] * zoom);
+				int by0 = (int) (buttonY[i][0] * zoom);
+				int by1 = (int) (buttonY[i][1] * zoom);
+				System.out.println("IN BUTTON " + x + " " + y + " " + (bx0 + x)
+						+ " " + bx1 + x + " ");
+				if (x >= bx0 + this.x && x <= bx1 + this.x && y >= by0 + this.y
+						&& y <= by1 + this.y) {
 					return i;
 				}
 			}
@@ -45,11 +60,22 @@ public class Box {
 
 	public int[] getButtonCenter(int index) {
 		int[] xy = new int[2];
-		xy[0] = this.x + buttonX[index][0]
-				+ ((buttonX[index][1] - buttonX[index][0]) / 2);
-		xy[1] = this.y + buttonY[index][0]
-				+ ((buttonY[index][1] - buttonY[index][0]) / 2);
+		int bx0 = (int) (buttonX[index][0] * zoom);
+		int bx1 = (int) (buttonX[index][1] * zoom);
+		int by0 = (int) (buttonY[index][0] * zoom);
+		int by1 = (int) (buttonY[index][1] * zoom);
+		xy[0] = this.x + bx0 + ((bx1 - bx0) / 2);
+		System.out.println("SUM " + xy[0]);
+		xy[1] = this.y + by0 + ((by1 - by0) / 2);
 		return xy;
+	}
+
+	public int getButtonRadius(int index) {
+		int r;
+		int bx0 = (int) (buttonX[index][0] * zoom);
+		int bx1 = (int) (buttonX[index][1] * zoom);
+		r = (bx1 - bx0) / 2;
+		return r;
 	}
 
 	// returns if the (posx,posy) is on box
@@ -82,7 +108,18 @@ public class Box {
 		return this.buttonPressed[index];
 	}
 
+	public void setZoom(double zoom) {
+		this.zoom = zoom;
+		image = new BitmapDrawable(context.getResources(),
+				Bitmap.createScaledBitmap(originalBitmap,
+						(int) (originalBitmap.getWidth() * zoom),
+						(int) (originalBitmap.getHeight() * zoom), true));
+		width = image.getBitmap().getWidth();
+		height = image.getBitmap().getHeight();
+	}
+
 	public void setX(int x) {
+		System.out.println("X IS " + x);
 		this.x = x;
 	}
 

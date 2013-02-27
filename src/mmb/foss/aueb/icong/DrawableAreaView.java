@@ -37,11 +37,14 @@ public class DrawableAreaView extends View {
 			HEIGHT = this.getHeight();
 		}
 		for (Box box : boxes) {
+			// TODO: Zooming to be removed
+			box.setZoom(1.3);
 			c.drawBitmap(box.getBitmap(), box.getX(), box.getY(), null);
 			for (int i = 0; i < box.getNumOfButtons(); i++) {
 				if (box.isPressed(i)) {
 					buttonCenter = box.getButtonCenter(i);
-					c.drawCircle(buttonCenter[0], buttonCenter[1], 10, paint);
+					c.drawCircle(buttonCenter[0], buttonCenter[1],
+							box.getButtonRadius(i), paint);
 				}
 			}
 		}
@@ -109,7 +112,7 @@ public class DrawableAreaView extends View {
 		return y;
 	}
 
-	// returns the righter pixel of the righter element 
+	// returns the righter pixel of the righter element
 	private int getRighter() {
 		int x = 0;
 		for (Box box : boxes) {
