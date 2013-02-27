@@ -1,6 +1,10 @@
 package mmb.foss.aueb.icong;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import mmb.foss.aueb.icong.boxes.Box;
 import android.content.Context;
@@ -22,6 +26,9 @@ public class DrawableAreaView extends View {
 	private int originalX, originalY;
 	private int[] buttonCenter = new int[2];
 	private int WIDTH, HEIGHT;
+	private HashMap<BoxButtonPair,BoxButtonPair> lines = new HashMap<BoxButtonPair,BoxButtonPair>();
+	private int selectedButton = -1;
+	private Box selectedButtonBox = null;
 
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -47,6 +54,14 @@ public class DrawableAreaView extends View {
 							box.getButtonRadius(i), paint);
 				}
 			}
+		}
+		Iterator<Entry<BoxButtonPair, BoxButtonPair>> it = lines.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<BoxButtonPair,BoxButtonPair> entry = it.next();
+			Box box0 = entry.getKey().getBox(), box1 = entry.getValue().getBox();
+			int button0 = entry.getKey().getButton(), button1 = entry.getValue().getButton();
+			int[] center0 = box0.getButtonCenter(button0), center1 = box1.getButtonCenter(button1);
+			c.drawLine(center0[0], center0[1], center1[0], center1[1], paint);
 		}
 	}
 
@@ -79,10 +94,19 @@ public class DrawableAreaView extends View {
 					originalX = box.getX();
 					originalY = box.getY();
 				} else {
-					if (box.isPressed(buttonPressed))
+					if (box.isPressed(buttonPressed)) {
 						box.unsetButtonPressed(buttonPressed);
-					else
+					} else {
 						box.setButtonPressed(buttonPressed);
+						if(selectedButton == -1) {
+							selectedButtonBox = box;
+							selectedButton = buttonPressed;
+						} else {
+							lines.put(new BoxButtonPair(selectedButtonBox, selectedButton), new BoxButtonPair(box, buttonPressed));
+							selectedButton = -1;
+							selectedButtonBox = null;
+						}						
+					}
 					invalidate();
 					selectedBox = null;
 				}
@@ -97,6 +121,7 @@ public class DrawableAreaView extends View {
 			break;
 		case MotionEvent.ACTION_UP:
 			selectedBox = null;
+			pressedX = pressedY = originalX = originalY = 0;
 			return false;
 		}
 		return true;
