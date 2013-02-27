@@ -59,6 +59,7 @@ public class DrawableAreaView extends View {
 		box.setY(y);
 		box.setX(x);
 		boxes.add(box);
+		invalidate();
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
