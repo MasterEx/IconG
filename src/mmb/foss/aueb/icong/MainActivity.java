@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -29,12 +30,15 @@ public class MainActivity extends Activity {
 
 	DrawableAreaView canvas;
 	BoxTypes[] boxes = BoxTypes.values();
-
+	static int width , height ;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        width = dm.widthPixels ;
+        height = dm.heightPixels;
 		canvas = (DrawableAreaView) findViewById(R.id.canvas);
 	}
 

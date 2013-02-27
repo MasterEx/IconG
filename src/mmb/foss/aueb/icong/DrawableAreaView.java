@@ -30,6 +30,8 @@ public class DrawableAreaView extends View {
 		mContext = context;
 		paint.setColor(Color.BLACK);
 		boxes = BoxArray.getBoxes();
+		WIDTH = MainActivity.width ;
+		HEIGHT = MainActivity.height ;
 	}
 
 	protected void onDraw(Canvas c) {
