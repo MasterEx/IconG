@@ -15,6 +15,8 @@ public class ScreenBox extends Box {
 		buttonX[0][1] = 25;
 		buttonY[0][0] = 10;
 		buttonY[0][1] = 30;
+		this.setNoOfInputs(1);
+		this.setNoOfOutpus(0);
 	}
 
 }

@@ -23,6 +23,8 @@ public class BlurBox extends Box {
 		buttonY[1][1] = 61;
 		buttonY[2][0] = 23;
 		buttonY[2][1] = 43;
+		this.setNoOfInputs(2);
+		this.setNoOfOutpus(1);
 	}
 
 }

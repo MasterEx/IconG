@@ -18,6 +18,7 @@ public class Box {
 	protected int[][] buttonX;
 	protected int[][] buttonY;
 	protected boolean[] buttonPressed;
+	private int noOfInputs,noOfOutpus ;
 
 	public Box(Context context, int id) {
 		// TODO Auto-generated constructor stub
@@ -148,4 +149,24 @@ public class Box {
 		return height;
 	}
 
+	public int getNoOfInputs()
+	{
+		return noOfInputs;
+	}
+
+	public void setNoOfInputs(int noOfInputs)
+	{
+		this.noOfInputs = noOfInputs;
+	}
+
+	public int getNoOfOutpus()
+	{
+		return noOfOutpus;
+	}
+
+	public void setNoOfOutpus(int noOfOutpus)
+	{
+		this.noOfOutpus = noOfOutpus;
+	}
+	
 }
