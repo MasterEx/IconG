@@ -15,6 +15,15 @@ public class ValueEntryBox extends Box {
 		buttonX[0][1] = 127;
 		buttonY[0][0] = 10;
 		buttonY[0][1] = 30;
+		this.setNoOfInputs(0);
+		this.setNoOfOutpus(1);
+	}
+
+	@Override
+	public void function()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

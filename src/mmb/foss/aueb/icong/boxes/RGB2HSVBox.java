@@ -19,6 +19,15 @@ public class RGB2HSVBox extends Box {
 		buttonY[0][1] = 25;
 		buttonY[1][0] = 5;
 		buttonY[1][1] = 25;
+		this.setNoOfInputs(1);
+		this.setNoOfOutpus(1);
+	}
+
+	@Override
+	public void function()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

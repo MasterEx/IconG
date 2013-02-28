@@ -3,13 +3,15 @@ package mmb.foss.aueb.icong;
 import java.util.ArrayList;
 
 import mmb.foss.aueb.icong.boxes.Box;
-import mmb.foss.aueb.icong.boxes.BoxArray;
+import mmb.foss.aueb.icong.boxes.CameraBox;
+import mmb.foss.aueb.icong.boxes.SavedState;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -25,17 +27,22 @@ public class DrawableAreaView extends View {
 	private int WIDTH, HEIGHT;
 	private ArrayList<BoxButtonPair[]> lines = new ArrayList<BoxButtonPair[]>();
 	private int selectedButton = -1;
+	private Box box = null;
 	private Box selectedButtonBox = null;
-
+	int buttonPressed = -1 ;
+	int buttonHovered = -1 ;
+	boolean drawingline = false ;
+	boolean foundPair = false ;
+	private int lineStartX , lineStartY ,lineCurrentX , lineCurrentY;
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		paint.setColor(Color.BLACK);
-		boxes = BoxArray.getBoxes();
 		WIDTH = MainActivity.width;
 		HEIGHT = MainActivity.height;
-	}
+		boxes = SavedState.getBoxes();
+		lines = SavedState.getLines();
 
 	protected void onDraw(Canvas c) {
 		if (WIDTH == 0) {
@@ -61,6 +68,10 @@ public class DrawableAreaView extends View {
 					.getButtonCenter(button1);
 			c.drawLine(center0[0], center0[1], center1[0], center1[1], paint);
 		}
+		if(drawingline)
+		{
+			c.drawLine(lineStartX,lineStartY,lineCurrentX,lineCurrentY,paint);
+		}
 	}
 
 	public void addBox(Box box) {
@@ -75,24 +86,93 @@ public class DrawableAreaView extends View {
 		box.setY(y);
 		box.setX(x);
 		boxes.add(box);
-		BoxArray.add(box);
+		SavedState.addBox(box);
 		invalidate();
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			Box box = getBoxTouched((int) event.getX(), (int) event.getY());
+			box = getBoxTouched((int) event.getX(), (int) event.getY());
 			if (box != null) {
 				selectedBox = box;
-				int buttonPressed = box.isButton((int) event.getX(),
+				buttonPressed = box.isButton((int) event.getX(),
 						(int) event.getY());
+				
 				if (buttonPressed == -1) {
 					pressedX = (int) event.getX();
 					pressedY = (int) event.getY();
 					originalX = box.getX();
 					originalY = box.getY();
 				} else {
+					//my code
+					Log.e("wtf","a "+buttonPressed);
+					if(!((buttonPressed+1)<=box.getNoOfInputs()))
+					{
+						int []center = box.getButtonCenter(buttonPressed);
+						lineStartX = center[0];
+						lineStartY = center[1];
+						box.setButtonPressed(buttonPressed);
+						drawingline = true ;
+					}
+					else
+					{
+						if (box.isPressed(buttonPressed)) {
+							box.unsetButtonPressed(buttonPressed);
+							
+							BoxButtonPair pair = new BoxButtonPair(box,
+									buttonPressed);
+							boolean found = false;
+							for (BoxButtonPair[] line : lines) {
+								if (found = line[0].equals(pair)) {
+									selectedButtonBox = line[1].getBox();
+									selectedButton = line[1].getButton();
+									lines.remove(line);
+									SavedState.removeLine(line);
+									selectedButtonBox.unsetButtonPressed(selectedButton);
+									break;
+								} else if (found = line[1].equals(pair)) {
+									selectedButtonBox = line[0].getBox();
+									selectedButton = line[0].getButton();
+									lines.remove(line);
+									SavedState.removeLine(line);
+									selectedButtonBox.unsetButtonPressed(selectedButton);
+									break;
+								}
+							}
+							if (!found) {
+								selectedButton = -1;
+								selectedButtonBox = null;
+							}
+
+						}
+					}
+					/*if(box.isPressed(buttonPressed))
+					{
+						Log.e("yolo",""+box.getNoOfInputs());
+						if(buttonPressed<=box.getNoOfInputs())
+						{
+							box.unsetButtonPressed(buttonPressed);
+							box.setButtonPressed(buttonPressed);
+							BoxButtonPair pair = new BoxButtonPair(box,
+									buttonPressed);
+							selectedButtonBox = box;
+							selectedButton = buttonPressed;
+							Log.e("yolo","yolo");
+						}
+						else
+						{
+							//box.setButtonPressed(buttonPressed);
+						}
+					}
+					*/
+					
+					
+					
+					
+					
+					/*
+					 * master's code
 					if (box.isPressed(buttonPressed)) {
 						// unsets the selected box if we click a second box
 						// which is already pressed
@@ -104,6 +184,7 @@ public class DrawableAreaView extends View {
 							selectedButtonBox
 									.unsetButtonPressed(selectedButton);
 						box.unsetButtonPressed(buttonPressed);
+						
 						BoxButtonPair pair = new BoxButtonPair(box,
 								buttonPressed);
 						boolean found = false;
@@ -140,6 +221,7 @@ public class DrawableAreaView extends View {
 							selectedButtonBox = null;
 						}
 					}
+					*/
 					invalidate();
 					selectedBox = null;
 				}
@@ -151,10 +233,52 @@ public class DrawableAreaView extends View {
 				selectedBox.setY((int) event.getY() - (pressedY - originalY));
 				invalidate();
 			}
+			if(drawingline)
+			{
+				lineCurrentX = (int) event.getX();
+				lineCurrentY = (int) event.getY();
+				Box boxHovered = getBoxTouched((int) event.getX(), (int) event.getY());
+				if(boxHovered!=null){
+					buttonHovered = boxHovered.isButton((int) event.getX(),
+							(int) event.getY());
+					if(buttonHovered!=-1)
+					{
+						if(((buttonHovered+1)<=boxHovered.getNoOfInputs()))
+						{
+							int []center = boxHovered.getButtonCenter(buttonHovered);
+							lineStartX = center[0];
+							lineStartY = center[1];
+							boxHovered.setButtonPressed(buttonHovered);
+							
+							
+							
+							
+							
+							
+							
+							drawingline = false ;
+							BoxButtonPair[] line = {
+									new BoxButtonPair(box,
+											buttonPressed),
+									new BoxButtonPair(boxHovered, buttonHovered) };
+							lines.add(line);
+							SavedState.addLine(line);
+							foundPair = true ;
+						}
+					}
+				}
+			}
+			invalidate();
 			break;
 		case MotionEvent.ACTION_UP:
+			drawingline = false ;
 			selectedBox = null;
+			if(!foundPair && buttonPressed!=-1)
+			{
+				box.unsetButtonPressed(buttonPressed);
+			}
 			pressedX = pressedY = originalX = originalY = 0;
+		    //TODO implement here to pou peftei 
 			return false;
 		}
 		return true;

@@ -27,6 +27,15 @@ public class MixBox extends Box {
 		buttonY[2][1] = 79;
 		buttonY[3][0] = 31;
 		buttonY[3][1] = 52;
+		this.setNoOfInputs(3);
+		this.setNoOfOutpus(1);
+	}
+
+	@Override
+	public void function()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

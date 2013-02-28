@@ -27,6 +27,15 @@ public class ForkBox extends Box {
 		buttonY[2][1] = 52;
 		buttonY[3][0] = 59;
 		buttonY[3][1] = 79;
+		this.setNoOfInputs(1);
+		this.setNoOfOutpus(3);
+	}
+
+	@Override
+	public void function()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

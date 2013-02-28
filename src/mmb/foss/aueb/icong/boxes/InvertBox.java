@@ -19,6 +19,15 @@ public class InvertBox extends Box {
 		buttonY[0][1] = 43;
 		buttonY[1][0] = 23;
 		buttonY[1][1] = 43;
+		this.setNoOfInputs(1);
+		this.setNoOfOutpus(1);
+	}
+
+	@Override
+	public void function()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

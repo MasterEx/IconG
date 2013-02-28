@@ -2,6 +2,7 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.util.Log;
 
 public class BlurBox extends Box {
 
@@ -23,6 +24,27 @@ public class BlurBox extends Box {
 		buttonY[1][1] = 61;
 		buttonY[2][0] = 23;
 		buttonY[2][1] = 43;
+		this.setNoOfInputs(2);
+		this.setNoOfOutpus(1);
+		
+	}
+	@Override
+	public void function()
+	{
+		Log.e("input 1",""+this.getInput1());
+		Log.e("input 2",""+this.getInput2());
+		if(this.getInput1()==null || this.getInput2()==null)
+		{
+			//do nothing
+		}
+		else
+		{
+			int yaw = (Integer)this.getInput1();
+			yaw += (Integer)this.getInput2(); 
+			Log.e("yoooooolo", ""+yaw);
+			this.setOutput1(yaw);
+		}
+		
 	}
 
 }
