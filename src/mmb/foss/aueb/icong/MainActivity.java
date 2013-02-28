@@ -85,8 +85,13 @@ public class MainActivity extends Activity {
 									line[1].getBox().setInput3(output);
 									break;
 							}
+							
+							
+							line[0].getBox().function();
+							line[0].setBox(line[0].getBox());
 							line[1].getBox().function();
 							line[1].setBox(line[1].getBox());
+							Log.e("line0",""+line[0].getBox().getInput1());
 							Log.e("line1 ", ""+line[1].getBox().getInput1());
 							Log.e("output",""+output);
 							try
