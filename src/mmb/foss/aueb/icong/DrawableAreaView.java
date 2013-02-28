@@ -112,6 +112,8 @@ public class DrawableAreaView extends View {
 						int[] center = box.getButtonCenter(buttonPressed);
 						lineStartX = center[0];
 						lineStartY = center[1];
+						lineCurrentX = lineStartX;
+						lineCurrentY = lineStartY;
 						box.setButtonPressed(buttonPressed);
 						drawingline = true;
 					} else {
