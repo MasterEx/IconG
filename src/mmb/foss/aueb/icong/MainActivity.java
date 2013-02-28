@@ -28,6 +28,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
@@ -38,6 +40,8 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main);
 		DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -52,7 +56,6 @@ public class MainActivity extends Activity {
 			public void onClick(View v)
 			{
 				Object output = null ;
-				Log.e("no of lines",""+SavedState.getLines().size());
 				for(int y = 0;y<SavedState.getLines().size();y++)
 				{
 				for(int i = 0;i<SavedState.getLines().size();i++)
@@ -62,14 +65,12 @@ public class MainActivity extends Activity {
 					{
 						if(line[1].getBox().getNoOfInputs()>0)
 						{
-							Log.e("NEW LINE","NEW LINE");
 							int buttonOutput =line[0].getButton()-line[0].getBox().getNoOfInputs()+1;
 							int buttonInput =line[1].getButton()+1;
 							switch(buttonOutput)
 							{
 								case 1:
 									output = line[0].getBox().getOutput1();
-									Log.e("value needed",""+line[0].getBox().getOutput1());
 									break;
 								case 2:
 									output = line[0].getBox().getOutput2();
@@ -82,15 +83,12 @@ public class MainActivity extends Activity {
 							{
 								case 1:
 									line[1].getBox().setInput1(output);
-									Log.e("ButtonInput1","does it work?"+output);
 									break ;
 								case 2:
 									line[1].getBox().setInput2(output);
-									Log.e("ButtonInput2","does it work?"+output);
 									break;
 								case 3:
 									line[1].getBox().setInput3(output);
-									Log.e("ButtonInput3","does it work?"+output);
 									break;
 							}
 							
@@ -100,14 +98,6 @@ public class MainActivity extends Activity {
 							line[1].getBox().function();
 							line[1].setBox(line[1].getBox());
 							
-							try
-							{
-								Log.e("output1",""+line[1].getBox().getOutput1());
-							}
-							catch(Exception e)
-							{
-								
-							}
 							
 							//TODO remove current line,and add another,with different settings
 							
