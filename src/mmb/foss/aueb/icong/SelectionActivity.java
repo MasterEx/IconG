@@ -1,6 +1,5 @@
 package mmb.foss.aueb.icong;
 
-import mmb.foss.aueb.icong.boxes.BoxTypes;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -92,8 +91,6 @@ public class SelectionActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				System.out.println(BoxTypes.Camera.ordinal());
-				System.out.println("TOUCHED " + arg2);
 				Intent selectedBox = new Intent();
 				selectedBox.setData(Uri.parse("" + arg2));
 				setResult(RESULT_OK, selectedBox);
