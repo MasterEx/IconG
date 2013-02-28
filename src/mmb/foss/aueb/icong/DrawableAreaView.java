@@ -190,11 +190,12 @@ public class DrawableAreaView extends View {
 		case MotionEvent.ACTION_UP:
 			drawingline = false;
 			selectedBox = null;
-			if (!foundPair && buttonPressed != -1) {
+			if (!foundPair && buttonPressed != -1 && box != null) {
 				box.unsetButtonPressed(buttonPressed);
 			}
 			pressedX = pressedY = originalX = originalY = 0;
 			// TODO implement here to pou peftei
+			invalidate();
 			return false;
 		}
 		return true;
