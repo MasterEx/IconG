@@ -1,5 +1,7 @@
 package mmb.foss.aueb.icong;
 //fml 
+import java.util.ArrayList;
+
 import mmb.foss.aueb.icong.boxes.BlurBox;
 import mmb.foss.aueb.icong.boxes.Box;
 import mmb.foss.aueb.icong.boxes.BoxTypes;
@@ -13,6 +15,7 @@ import mmb.foss.aueb.icong.boxes.HSV2RGBBox;
 import mmb.foss.aueb.icong.boxes.InvertBox;
 import mmb.foss.aueb.icong.boxes.MixBox;
 import mmb.foss.aueb.icong.boxes.RGB2HSVBox;
+import mmb.foss.aueb.icong.boxes.SavedState;
 import mmb.foss.aueb.icong.boxes.ScreenBox;
 import mmb.foss.aueb.icong.boxes.SliderBox;
 import mmb.foss.aueb.icong.boxes.ValueEntryBox;
@@ -24,9 +27,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
-
+	Button btnGo ;
 	DrawableAreaView canvas;
 	BoxTypes[] boxes = BoxTypes.values();
 	static int width , height ;
@@ -39,6 +43,69 @@ public class MainActivity extends Activity {
         width = dm.widthPixels ;
         height = dm.heightPixels;
 		canvas = (DrawableAreaView) findViewById(R.id.canvas);
+		btnGo = (Button)findViewById(R.id.run_button);
+		btnGo.setOnClickListener(new View.OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				Object output = null ;
+				
+				for(BoxButtonPair[] line : SavedState.getLines())
+				{
+					if(line[0].getBox().getNoOfOutpus()>0)
+					{
+						if(line[1].getBox().getNoOfInputs()>0)
+						{
+							int buttonOutput = line[0].getButton()+1;
+							int buttonInput =line[1].getButton()+1;
+
+							switch(buttonOutput)
+							{
+								case 1:
+									output = line[0].getBox().getOutput1();
+									break;
+								case 2:
+									output = line[0].getBox().getOutput2();
+									break;
+								case 3:
+									output = line[0].getBox().getOutput3();
+									break;
+							}
+							switch(buttonInput)
+							{
+								case 1:
+									line[1].getBox().setInput1(output);
+									break ;
+								case 2:
+									line[1].getBox().setInput2(output);
+									break;
+								case 3:
+									line[1].getBox().setInput3(output);
+									break;
+							}
+							line[1].getBox().function();
+							line[1].setBox(line[1].getBox());
+							Log.e("line1 ", ""+line[1].getBox().getInput1());
+							Log.e("output",""+output);
+							try
+							{
+								Log.e("output1",""+line[1].getBox().getOutput1());
+							}
+							catch(Exception e)
+							{
+								
+							}
+							
+							//TODO remove current line,and add another,with different settings
+							
+						}
+					}
+				}
+				
+			}
+		});
 	}
 
 	@Override
@@ -56,7 +123,7 @@ public class MainActivity extends Activity {
 		int boxIndex = Integer.parseInt(data.getData().toString());
 		canvas.addBox(getBox(boxIndex));
 	}
-
+	
 	private Box getBox(int index) {
 		Box box = null;
 		Context ctx = getBaseContext();

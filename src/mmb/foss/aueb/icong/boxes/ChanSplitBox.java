@@ -31,4 +31,11 @@ public class ChanSplitBox extends Box {
 		this.setNoOfOutpus(3);
 	}
 
+	@Override
+	public void function()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -27,4 +27,11 @@ public class ClipBox extends Box {
 		this.setNoOfOutpus(1);
 	}
 
+	@Override
+	public void function()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

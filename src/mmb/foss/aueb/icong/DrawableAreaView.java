@@ -3,6 +3,7 @@ package mmb.foss.aueb.icong;
 import java.util.ArrayList;
 
 import mmb.foss.aueb.icong.boxes.Box;
+import mmb.foss.aueb.icong.boxes.CameraBox;
 import mmb.foss.aueb.icong.boxes.SavedState;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -39,6 +40,7 @@ public class DrawableAreaView extends View {
 		mContext = context;
 		paint.setColor(Color.BLACK);
 		boxes = SavedState.getBoxes();
+		lines = SavedState.getLines();
 		WIDTH = MainActivity.width ;
 		HEIGHT = MainActivity.height ;
 	}
@@ -97,6 +99,7 @@ public class DrawableAreaView extends View {
 				selectedBox = box;
 				buttonPressed = box.isButton((int) event.getX(),
 						(int) event.getY());
+				
 				if (buttonPressed == -1) {
 					pressedX = (int) event.getX();
 					pressedY = (int) event.getY();
@@ -126,12 +129,14 @@ public class DrawableAreaView extends View {
 									selectedButtonBox = line[1].getBox();
 									selectedButton = line[1].getButton();
 									lines.remove(line);
+									SavedState.removeLine(line);
 									selectedButtonBox.unsetButtonPressed(selectedButton);
 									break;
 								} else if (found = line[1].equals(pair)) {
 									selectedButtonBox = line[0].getBox();
 									selectedButton = line[0].getButton();
 									lines.remove(line);
+									SavedState.removeLine(line);
 									selectedButtonBox.unsetButtonPressed(selectedButton);
 									break;
 								}
@@ -249,6 +254,7 @@ public class DrawableAreaView extends View {
 											buttonPressed),
 									new BoxButtonPair(boxHovered, buttonHovered) };
 							lines.add(line);
+							SavedState.addLine(line);
 							foundPair = true ;
 						}
 					}
