@@ -34,6 +34,7 @@ public class Box {
 	}
 
 	public Bitmap getBitmap() {
+		System.out.println("I AM NOOB");
 		if (image != null)
 			return image.getBitmap();
 		return null;
@@ -64,6 +65,7 @@ public class Box {
 		int by0 = (int) (buttonY[index][0] * zoom);
 		int by1 = (int) (buttonY[index][1] * zoom);
 		xy[0] = this.x + bx0 + ((bx1 - bx0) / 2);
+		System.out.println("SUM " + xy[0]);
 		xy[1] = this.y + by0 + ((by1 - by0) / 2);
 		return xy;
 	}
@@ -117,6 +119,7 @@ public class Box {
 	}
 
 	public void setX(int x) {
+		System.out.println("X IS " + x);
 		this.x = x;
 	}
 

@@ -1,15 +1,18 @@
 package mmb.foss.aueb.icong;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import mmb.foss.aueb.icong.boxes.Box;
-import mmb.foss.aueb.icong.boxes.SavedState;
+import mmb.foss.aueb.icong.boxes.BoxArray;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,25 +27,22 @@ public class DrawableAreaView extends View {
 	private int originalX, originalY;
 	private int[] buttonCenter = new int[2];
 	private int WIDTH, HEIGHT;
-	private ArrayList<BoxButtonPair[]> lines = new ArrayList<BoxButtonPair[]>();
+	private HashMap<BoxButtonPair,BoxButtonPair> lines = new HashMap<BoxButtonPair,BoxButtonPair>();
 	private int selectedButton = -1;
 	private Box selectedButtonBox = null;
-	private final byte NONE = 0;
-	private final byte LINE = 1 ;
-	private final byte ZOOM = 2 ;
-	private Point midPoint = new Point();
-	
+
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		paint.setColor(Color.BLACK);
-		boxes = SavedState.getBoxes();
+		boxes = BoxArray.getBoxes();
 		WIDTH = MainActivity.width ;
 		HEIGHT = MainActivity.height ;
 	}
 
 	protected void onDraw(Canvas c) {
+		System.out.println("IN ON DRAW");
 		if (WIDTH == 0) {
 			WIDTH = this.getWidth();
 			HEIGHT = this.getHeight();
@@ -59,11 +59,12 @@ public class DrawableAreaView extends View {
 				}
 			}
 		}
-		for (BoxButtonPair[] line : lines) {
-			Box box0 = line[0].getBox(), box1 = line[1].getBox();
-			int button0 = line[0].getButton(), button1 = line[1].getButton();
-			int[] center0 = box0.getButtonCenter(button0), center1 = box1
-					.getButtonCenter(button1);
+		Iterator<Entry<BoxButtonPair, BoxButtonPair>> it = lines.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<BoxButtonPair,BoxButtonPair> entry = it.next();
+			Box box0 = entry.getKey().getBox(), box1 = entry.getValue().getBox();
+			int button0 = entry.getKey().getButton(), button1 = entry.getValue().getButton();
+			int[] center0 = box0.getButtonCenter(button0), center1 = box1.getButtonCenter(button1);
 			c.drawLine(center0[0], center0[1], center1[0], center1[1], paint);
 		}
 	}
@@ -80,7 +81,7 @@ public class DrawableAreaView extends View {
 		box.setY(y);
 		box.setX(x);
 		boxes.add(box);
-		SavedState.addBox(box);
+		BoxArray.add(box);
 		invalidate();
 	}
 
@@ -100,41 +101,16 @@ public class DrawableAreaView extends View {
 				} else {
 					if (box.isPressed(buttonPressed)) {
 						box.unsetButtonPressed(buttonPressed);
-						BoxButtonPair pair = new BoxButtonPair(box,
-								buttonPressed);
-						boolean found = false;
-						for (BoxButtonPair[] line : lines) {
-							if (found = line[0].equals(pair)) {
-								selectedButtonBox = line[1].getBox();
-								selectedButton = line[1].getButton();
-								lines.remove(line);
-								break;
-							} else if (found = line[1].equals(pair)) {
-								selectedButtonBox = line[0].getBox();
-								selectedButton = line[0].getButton();
-								lines.remove(line);
-								break;
-							}
-						}
-						if (!found) {
-							selectedButton = -1;
-							selectedButtonBox = null;
-						}
-
 					} else {
 						box.setButtonPressed(buttonPressed);
-						if (selectedButton == -1) {
+						if(selectedButton == -1) {
 							selectedButtonBox = box;
 							selectedButton = buttonPressed;
 						} else {
-							BoxButtonPair[] line = {
-									new BoxButtonPair(selectedButtonBox,
-											selectedButton),
-									new BoxButtonPair(box, buttonPressed) };
-							lines.add(line);
+							lines.put(new BoxButtonPair(selectedButtonBox, selectedButton), new BoxButtonPair(box, buttonPressed));
 							selectedButton = -1;
 							selectedButtonBox = null;
-						}
+						}						
 					}
 					invalidate();
 					selectedBox = null;

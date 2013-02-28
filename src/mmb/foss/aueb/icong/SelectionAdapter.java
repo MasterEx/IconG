@@ -51,6 +51,7 @@ public class SelectionAdapter extends BaseAdapter {
 		View view = convertView;
 		if (convertView == null)
 			view = inflater.inflate(R.layout.selection_list_row, null);
+		System.out.println("HERE");
 		ImageView box = (ImageView) view.findViewById(R.id.box_image);
 		TextView boxName = (TextView) view.findViewById(R.id.box_name);
 		TextView boxDescription = (TextView) view

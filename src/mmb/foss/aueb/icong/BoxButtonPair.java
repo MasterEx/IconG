@@ -3,7 +3,7 @@ package mmb.foss.aueb.icong;
 import mmb.foss.aueb.icong.boxes.Box;
 
 public class BoxButtonPair implements Comparable<BoxButtonPair> {
-
+	
 	private int button;
 	private Box box;
 
@@ -11,25 +11,18 @@ public class BoxButtonPair implements Comparable<BoxButtonPair> {
 		// TODO Auto-generated constructor stub
 		this.setBox(box);
 		this.setButton(button);
+		System.out.println("IN HERE");
 	}
 
 	@Override
 	public int compareTo(BoxButtonPair another) {
 		// TODO Auto-generated method stub
-		if (getBox().equals(another.getBox())) {
-			return getButton() - another.getButton();
+		System.out.println("IN HERE ** ");
+		if(getBox() == another.getBox()) {
+			return getButton()-another.getButton();
 		}
+		System.out.println("IN HERE ++ ");
 		return 0;
-	}
-
-	public boolean equals(Object o) {
-		BoxButtonPair other = (BoxButtonPair) o;
-		if (box.equals(other.getBox()) && button == other.getButton())
-			return true;
-		else
-			return false;
-		// return (box.equals(((BoxButtonPair) o).getBox()) && button ==
-		// ((BoxButtonPair) o).getButton());
 	}
 
 	public int getButton() {
