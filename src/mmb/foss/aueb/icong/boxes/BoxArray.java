@@ -2,15 +2,14 @@ package mmb.foss.aueb.icong.boxes;
 
 import java.util.ArrayList;
 
-public class BoxArray 
-{
+public class BoxArray {
 	static ArrayList<Box> boxes = new ArrayList<Box>();
-	public static void add(Box box)
-	{
+
+	public static void add(Box box) {
 		boxes.add(box);
 	}
-	public static ArrayList<Box> getBoxes()
-	{
-		return boxes ;
+
+	public static ArrayList<Box> getBoxes() {
+		return boxes;
 	}
 }

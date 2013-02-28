@@ -33,8 +33,8 @@ public class DrawableAreaView extends View {
 		mContext = context;
 		paint.setColor(Color.BLACK);
 		boxes = BoxArray.getBoxes();
-		WIDTH = MainActivity.width ;
-		HEIGHT = MainActivity.height ;
+		WIDTH = MainActivity.width;
+		HEIGHT = MainActivity.height;
 	}
 
 	protected void onDraw(Canvas c) {
@@ -94,6 +94,15 @@ public class DrawableAreaView extends View {
 					originalY = box.getY();
 				} else {
 					if (box.isPressed(buttonPressed)) {
+						// unsets the selected box if we click a second box
+						// which is already pressed
+						// maybe it should be better another approach like
+						// connecting the selected box
+						// with the one clicked and removing the old
+						// connection/line
+						if (selectedButtonBox != null)
+							selectedButtonBox
+									.unsetButtonPressed(selectedButton);
 						box.unsetButtonPressed(buttonPressed);
 						BoxButtonPair pair = new BoxButtonPair(box,
 								buttonPressed);
