@@ -18,17 +18,16 @@ public class ScreenBox extends Box {
 		buttonY[0][1] = 30;
 		this.setNoOfInputs(1);
 		this.setNoOfOutpus(0);
-		
+
 	}
 
 	@Override
-	public void function()
-	{
+	public void function() {
 		// TODO Auto-generated method stub
-		Log.e("Screen",""+this.getInput1());
-		if(this.getInput1()!=null)
+		Log.e("Screen", "" + this.getInput1());
+		if (this.getInput1() != null)
 			this.setOutput1(this.getInput1());
-		Log.e("Screen",""+this.getInput1());
+		Log.e("Screen", "" + this.getInput1());
 	}
 
 }

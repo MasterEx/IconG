@@ -18,17 +18,13 @@ public class CameraBox extends Box {
 		this.setNoOfInputs(0);
 		this.setNoOfOutpus(1);
 		this.setOutput1(5);
-		
+
 	}
 
 	@Override
-	public void function()
-	{
+	public void function() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
-	
 
 }

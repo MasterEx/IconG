@@ -1,8 +1,6 @@
 package mmb.foss.aueb.icong;
 
 //fml 
-import java.util.ArrayList;
-
 import mmb.foss.aueb.icong.boxes.BlurBox;
 import mmb.foss.aueb.icong.boxes.Box;
 import mmb.foss.aueb.icong.boxes.BoxTypes;
@@ -23,7 +21,6 @@ import mmb.foss.aueb.icong.boxes.ValueEntryBox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -34,7 +31,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
-	Button btnGo ;
+	Button btnGo;
 	DrawableAreaView canvas;
 	BoxTypes[] boxes = BoxTypes.values();
 	static int width, height;
@@ -43,34 +40,29 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main);
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		width = dm.widthPixels;
 		height = dm.heightPixels;
 		canvas = (DrawableAreaView) findViewById(R.id.canvas);
-		btnGo = (Button)findViewById(R.id.run_button);
-		btnGo.setOnClickListener(new View.OnClickListener()
-		{
-			
+		btnGo = (Button) findViewById(R.id.run_button);
+		btnGo.setOnClickListener(new View.OnClickListener() {
+
 			@Override
-			public void onClick(View v)
-			{
-				Object output = null ;
-				for(int y = 0;y<SavedState.getLines().size();y++)
-				{
-				for(int i = 0;i<SavedState.getLines().size();i++)
-				{
-					BoxButtonPair[] line = SavedState.getLine(i) ;
-					if(line[0].getBox().getNoOfOutpus()>0)
-					{
-						if(line[1].getBox().getNoOfInputs()>0)
-						{
-							int buttonOutput =line[0].getButton()-line[0].getBox().getNoOfInputs()+1;
-							int buttonInput =line[1].getButton()+1;
-							switch(buttonOutput)
-							{
+			public void onClick(View v) {
+				Object output = null;
+				for (int y = 0; y < SavedState.getLines().size(); y++) {
+					for (int i = 0; i < SavedState.getLines().size(); i++) {
+						BoxButtonPair[] line = SavedState.getLine(i);
+						if (line[0].getBox().getNoOfOutpus() > 0) {
+							if (line[1].getBox().getNoOfInputs() > 0) {
+								int buttonOutput = line[0].getButton()
+										- line[0].getBox().getNoOfInputs() + 1;
+								int buttonInput = line[1].getButton() + 1;
+								switch (buttonOutput) {
 								case 1:
 									output = line[0].getBox().getOutput1();
 									break;
@@ -80,34 +72,32 @@ public class MainActivity extends Activity {
 								case 3:
 									output = line[0].getBox().getOutput3();
 									break;
-							}
-							switch(buttonInput)
-							{
+								}
+								switch (buttonInput) {
 								case 1:
 									line[1].getBox().setInput1(output);
-									break ;
+									break;
 								case 2:
 									line[1].getBox().setInput2(output);
 									break;
 								case 3:
 									line[1].getBox().setInput3(output);
 									break;
+								}
+
+								line[0].getBox().function();
+								line[0].setBox(line[0].getBox());
+								line[1].getBox().function();
+								line[1].setBox(line[1].getBox());
+
+								// TODO remove current line,and add another,with
+								// different settings
+
 							}
-							
-							
-							line[0].getBox().function();
-							line[0].setBox(line[0].getBox());
-							line[1].getBox().function();
-							line[1].setBox(line[1].getBox());
-							
-							
-							//TODO remove current line,and add another,with different settings
-							
 						}
 					}
 				}
-				}
-				
+
 			}
 		});
 	}
@@ -127,7 +117,7 @@ public class MainActivity extends Activity {
 		int boxIndex = Integer.parseInt(data.getData().toString());
 		canvas.addBox(getBox(boxIndex));
 	}
-	
+
 	private Box getBox(int index) {
 		Box box = null;
 		Context ctx = getBaseContext();

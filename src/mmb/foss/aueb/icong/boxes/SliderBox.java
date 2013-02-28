@@ -21,10 +21,9 @@ public class SliderBox extends Box {
 	}
 
 	@Override
-	public void function()
-	{
+	public void function() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
