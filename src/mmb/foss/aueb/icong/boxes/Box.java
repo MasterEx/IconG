@@ -19,7 +19,7 @@ public abstract class Box {
 	protected int[][] buttonY;
 	protected boolean[] buttonPressed;
 	private int noOfInputs, noOfOutpus;
-	private Object output1, output2, output3, input1, input2, input3;
+	private Object[] inputs, outputs;
 
 	public Box(Context context, int id) {
 		// TODO Auto-generated constructor stub
@@ -156,6 +156,7 @@ public abstract class Box {
 
 	public void setNoOfInputs(int noOfInputs) {
 		this.noOfInputs = noOfInputs;
+		this.inputs = new Object[noOfInputs];
 	}
 
 	public int getNoOfOutpus() {
@@ -164,54 +165,23 @@ public abstract class Box {
 
 	public void setNoOfOutpus(int noOfOutpus) {
 		this.noOfOutpus = noOfOutpus;
+		this.outputs = new Object[noOfOutpus];
 	}
-
-	public Object getOutput1() {
-		return output1;
+	
+	public Object getOutput(int index) {
+		return this.outputs[index];
 	}
-
-	public void setOutput1(Object output1) {
-		this.output1 = output1;
+	
+	public void setOutput(Object output, int index) {
+		this.outputs[index] = output;
 	}
-
-	public Object getOutput2() {
-		return output2;
+	
+	public Object getInput(int index) {
+		return this.inputs[index];
 	}
-
-	public void setOutput2(Object output2) {
-		this.output2 = output2;
-	}
-
-	public Object getOutput3() {
-		return output3;
-	}
-
-	public void setOutput3(Object output3) {
-		this.output3 = output3;
-	}
-
-	public Object getInput1() {
-		return input1;
-	}
-
-	public void setInput1(Object input1) {
-		this.input1 = input1;
-	}
-
-	public Object getInput2() {
-		return input2;
-	}
-
-	public void setInput2(Object input2) {
-		this.input2 = input2;
-	}
-
-	public Object getInput3() {
-		return input3;
-	}
-
-	public void setInput3(Object input3) {
-		this.input3 = input3;
+	
+	public void setInput(Object input, int index) {
+		this.inputs[index] = input;
 	}
 
 	public abstract void function();

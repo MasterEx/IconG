@@ -63,25 +63,27 @@ public class MainActivity extends Activity {
 										- line[0].getBox().getNoOfInputs() + 1;
 								int buttonInput = line[1].getButton() + 1;
 								switch (buttonOutput) {
+								// TODO output = line[0].getBox().getOutput(buttonOutput-1);
 								case 1:
-									output = line[0].getBox().getOutput1();
+									output = line[0].getBox().getOutput(0);
 									break;
 								case 2:
-									output = line[0].getBox().getOutput2();
+									output = line[0].getBox().getOutput(1);
 									break;
 								case 3:
-									output = line[0].getBox().getOutput3();
+									output = line[0].getBox().getOutput(2);
 									break;
 								}
 								switch (buttonInput) {
+								// TODO line[1].getBox().setInput(output,buttonInput-1);
 								case 1:
-									line[1].getBox().setInput1(output);
+									line[1].getBox().setInput(output,0);
 									break;
 								case 2:
-									line[1].getBox().setInput2(output);
+									line[1].getBox().setInput(output,1);
 									break;
 								case 3:
-									line[1].getBox().setInput3(output);
+									line[1].getBox().setInput(output,2);
 									break;
 								}
 

@@ -31,15 +31,15 @@ public class BlurBox extends Box {
 
 	@Override
 	public void function() {
-		Log.e("input 1", "" + this.getInput1());
-		Log.e("input 2", "" + this.getInput2());
-		if (this.getInput1() == null || this.getInput2() == null) {
+		Log.e("input 1", "" + this.getInput(0));
+		Log.e("input 2", "" + this.getInput(1));
+		if (this.getInput(1) == null || this.getInput(1) == null) {
 			// do nothing
 		} else {
-			int yaw = (Integer) this.getInput1();
-			yaw += (Integer) this.getInput2();
+			int yaw = (Integer) this.getInput(0);
+			yaw += (Integer) this.getInput(1);
 			Log.e("yoooooolo", "" + yaw);
-			this.setOutput1(yaw);
+			this.setOutput(yaw,0);
 		}
 
 	}

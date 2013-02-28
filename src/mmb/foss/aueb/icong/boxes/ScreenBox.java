@@ -24,10 +24,10 @@ public class ScreenBox extends Box {
 	@Override
 	public void function() {
 		// TODO Auto-generated method stub
-		Log.e("Screen", "" + this.getInput1());
-		if (this.getInput1() != null)
-			this.setOutput1(this.getInput1());
-		Log.e("Screen", "" + this.getInput1());
+		Log.e("Screen", "" + this.getInput(0));
+		if (this.getInput(0) != null)
+			this.setOutput(this.getInput(0),0);
+		Log.e("Screen", "" + this.getInput(0));
 	}
 
 }

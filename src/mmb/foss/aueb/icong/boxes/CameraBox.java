@@ -17,7 +17,7 @@ public class CameraBox extends Box {
 		buttonY[0][1] = 30;
 		this.setNoOfInputs(0);
 		this.setNoOfOutpus(1);
-		this.setOutput1(5);
+		this.setOutput(5,0);
 
 	}
 
