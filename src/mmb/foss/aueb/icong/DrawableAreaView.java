@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mmb.foss.aueb.icong.boxes.Box;
+import mmb.foss.aueb.icong.boxes.BoxArray;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
@@ -35,6 +36,9 @@ public class DrawableAreaView extends View {
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		paint.setColor(Color.BLACK);
+		boxes = BoxArray.getBoxes();
+		WIDTH = MainActivity.width ;
+		HEIGHT = MainActivity.height ;
 	}
 
 	protected void onDraw(Canvas c) {
@@ -77,6 +81,7 @@ public class DrawableAreaView extends View {
 		box.setY(y);
 		box.setX(x);
 		boxes.add(box);
+		BoxArray.add(box);
 		invalidate();
 	}
 
