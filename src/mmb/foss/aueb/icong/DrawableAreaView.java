@@ -7,12 +7,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mmb.foss.aueb.icong.boxes.Box;
-import mmb.foss.aueb.icong.boxes.BoxArray;
+import mmb.foss.aueb.icong.boxes.SavedState;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,13 +31,17 @@ public class DrawableAreaView extends View {
 	private HashMap<BoxButtonPair,BoxButtonPair> lines = new HashMap<BoxButtonPair,BoxButtonPair>();
 	private int selectedButton = -1;
 	private Box selectedButtonBox = null;
-
+	private final byte NONE = 0;
+	private final byte LINE = 1 ;
+	private final byte ZOOM = 2 ;
+	private Point midPoint = new Point();
+	
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		paint.setColor(Color.BLACK);
-		boxes = BoxArray.getBoxes();
+		boxes = SavedState.getBoxes();
 		WIDTH = MainActivity.width ;
 		HEIGHT = MainActivity.height ;
 	}
@@ -81,7 +86,7 @@ public class DrawableAreaView extends View {
 		box.setY(y);
 		box.setX(x);
 		boxes.add(box);
-		BoxArray.add(box);
+		SavedState.addBox(box);
 		invalidate();
 	}
 
