@@ -22,6 +22,7 @@ import mmb.foss.aueb.icong.boxes.ValueEntryBox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -51,20 +52,24 @@ public class MainActivity extends Activity {
 			public void onClick(View v)
 			{
 				Object output = null ;
-				
-				for(BoxButtonPair[] line : SavedState.getLines())
+				Log.e("no of lines",""+SavedState.getLines().size());
+				for(int y = 0;y<SavedState.getLines().size();y++)
 				{
+				for(int i = 0;i<SavedState.getLines().size();i++)
+				{
+					BoxButtonPair[] line = SavedState.getLine(i) ;
 					if(line[0].getBox().getNoOfOutpus()>0)
 					{
 						if(line[1].getBox().getNoOfInputs()>0)
 						{
-							int buttonOutput = line[0].getButton()+1;
+							Log.e("NEW LINE","NEW LINE");
+							int buttonOutput =line[0].getButton()-line[0].getBox().getNoOfInputs()+1;
 							int buttonInput =line[1].getButton()+1;
-
 							switch(buttonOutput)
 							{
 								case 1:
 									output = line[0].getBox().getOutput1();
+									Log.e("value needed",""+line[0].getBox().getOutput1());
 									break;
 								case 2:
 									output = line[0].getBox().getOutput2();
@@ -77,12 +82,15 @@ public class MainActivity extends Activity {
 							{
 								case 1:
 									line[1].getBox().setInput1(output);
+									Log.e("ButtonInput1","does it work?"+output);
 									break ;
 								case 2:
 									line[1].getBox().setInput2(output);
+									Log.e("ButtonInput2","does it work?"+output);
 									break;
 								case 3:
 									line[1].getBox().setInput3(output);
+									Log.e("ButtonInput3","does it work?"+output);
 									break;
 							}
 							
@@ -91,9 +99,7 @@ public class MainActivity extends Activity {
 							line[0].setBox(line[0].getBox());
 							line[1].getBox().function();
 							line[1].setBox(line[1].getBox());
-							Log.e("line0",""+line[0].getBox().getInput1());
-							Log.e("line1 ", ""+line[1].getBox().getInput1());
-							Log.e("output",""+output);
+							
 							try
 							{
 								Log.e("output1",""+line[1].getBox().getOutput1());
@@ -107,6 +113,7 @@ public class MainActivity extends Activity {
 							
 						}
 					}
+				}
 				}
 				
 			}

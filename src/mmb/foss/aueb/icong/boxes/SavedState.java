@@ -33,4 +33,9 @@ public class SavedState
 	{
 		lines.remove(line);
 	}
+	public static BoxButtonPair[] getLine(int index)
+	{
+		return lines.get(index);
+	}
+	
 }
