@@ -1,14 +1,18 @@
 package mmb.foss.aueb.icong;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import mmb.foss.aueb.icong.boxes.Box;
 import mmb.foss.aueb.icong.boxes.SavedState;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -35,6 +39,8 @@ public class DrawableAreaView extends View {
 	private int lineStartX, lineStartY, lineCurrentX, lineCurrentY;
 	private long tap;
 	private final int DOUBLE_TAP_INTERVAL = (int) (0.3 * 1000);
+	private BitmapDrawable trash;
+	private boolean showTrash;
 
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -44,13 +50,20 @@ public class DrawableAreaView extends View {
 		WIDTH = MainActivity.width;
 		HEIGHT = MainActivity.height;
 		boxes = SavedState.getBoxes();
-		lines = SavedState.getLines();
+		lines = SavedState.getLines();		
 	}
 
 	protected void onDraw(Canvas c) {
 		if (WIDTH == 0) {
 			WIDTH = this.getWidth();
 			HEIGHT = this.getHeight();
+			InputStream is = mContext.getResources().openRawResource(R.drawable.trash);
+			Bitmap originalBitmap = BitmapFactory.decodeStream(is);
+			int w = WIDTH/10, h = (w*originalBitmap.getHeight())/originalBitmap.getWidth();
+			trash = new BitmapDrawable(mContext.getResources(),
+					Bitmap.createScaledBitmap(originalBitmap,
+							w, h,
+							true));
 		}
 		for (Box box : boxes) {
 			// TODO: Zooming to be removed
@@ -74,6 +87,9 @@ public class DrawableAreaView extends View {
 		if (drawingline) {
 			c.drawLine(lineStartX, lineStartY, lineCurrentX, lineCurrentY,
 					paint);
+		}
+		if (showTrash) {			
+			c.drawBitmap(trash.getBitmap(), (WIDTH - trash.getBitmap().getWidth())/2, HEIGHT-40, paint);
 		}
 	}
 
@@ -114,7 +130,9 @@ public class DrawableAreaView extends View {
 					pressedY = (int) event.getY();
 					originalX = box.getX();
 					originalY = box.getY();
+					showTrash = true;
 				} else {
+					showTrash = false;
 					// my code
 					Log.e("wtf", "a " + buttonPressed);
 					if(!box.isPressed(buttonPressed)){
@@ -163,6 +181,8 @@ public class DrawableAreaView extends View {
 						selectedBox = null;
 					}
 				}
+			} else {
+				showTrash = false;
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
