@@ -155,7 +155,7 @@ public class DrawableAreaView extends View {
 						} else {
 							// if the button pressed was pressed before deletes
 							// this connection/line
-							removeLine(box,buttonPressed);
+							removeLine(box, buttonPressed);
 						}
 						int[] center = box.getButtonCenter(buttonPressed);
 						lineStartX = center[0];
@@ -193,7 +193,9 @@ public class DrawableAreaView extends View {
 							(int) event.getY());
 					if (buttonHovered != -1) {
 						// if we have drawned a line on another's box's button
-						if (buttonHovered < boxHovered.getNoOfInputs() && !boxHovered.isPressed(buttonHovered)) {
+						if (buttonHovered < boxHovered.getNoOfInputs()
+								&& !boxHovered.isPressed(buttonHovered)
+								&& !box.equals(boxHovered)) {
 							// if we have drawned a line on another's box's
 							// input button
 							int[] center = boxHovered
