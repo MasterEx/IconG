@@ -121,6 +121,7 @@ public class MainActivity extends Activity {
 		case R.id.clear_screen:
 			SavedState.clearBoxes();
 			SavedState.clearLines();
+			canvas.hideTrash();
 			canvas.invalidate();
 			return true;
 		default:
