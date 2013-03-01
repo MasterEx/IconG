@@ -41,6 +41,8 @@ public class DrawableAreaView extends View {
 	private final int DOUBLE_TAP_INTERVAL = (int) (0.3 * 1000);
 	private BitmapDrawable trash;
 	private boolean showTrash;
+	private int trashX, trashY;
+	private Box possibleTrash;
 
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -64,6 +66,8 @@ public class DrawableAreaView extends View {
 					Bitmap.createScaledBitmap(originalBitmap,
 							w, h,
 							true));
+			trashX = (WIDTH - trash.getBitmap().getWidth())/2;
+			trashY = HEIGHT-40;
 		}
 		for (Box box : boxes) {
 			// TODO: Zooming to be removed
@@ -89,7 +93,7 @@ public class DrawableAreaView extends View {
 					paint);
 		}
 		if (showTrash) {			
-			c.drawBitmap(trash.getBitmap(), (WIDTH - trash.getBitmap().getWidth())/2, HEIGHT-40, paint);
+			c.drawBitmap(trash.getBitmap(), trashX, trashY, paint);
 		}
 	}
 
@@ -112,6 +116,10 @@ public class DrawableAreaView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
+			if(showTrash && onTrash(event.getX(), event.getY())) {
+				deleteBox(possibleTrash);
+				possibleTrash = null;
+			}
 			box = getBoxTouched((int) event.getX(), (int) event.getY());
 			if (box != null) {
 				selectedBox = box;
@@ -131,8 +139,10 @@ public class DrawableAreaView extends View {
 					originalX = box.getX();
 					originalY = box.getY();
 					showTrash = true;
+					possibleTrash = box;
 				} else {
 					showTrash = false;
+					possibleTrash = null;
 					// my code
 					Log.e("wtf", "a " + buttonPressed);
 					if(!box.isPressed(buttonPressed)){
@@ -183,6 +193,7 @@ public class DrawableAreaView extends View {
 				}
 			} else {
 				showTrash = false;
+				possibleTrash = null;
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -262,6 +273,51 @@ public class DrawableAreaView extends View {
 			}
 		}
 		return null;
+	}
+	
+	private boolean onTrash(float f, float g) {
+		boolean isOnTrash = false;
+		if (f >= trashX && f <= (trashX + trash.getBitmap().getWidth()) && g >= trashY
+				&& g <= (trashY + trash.getBitmap().getHeight())) {
+			isOnTrash = true;
+		}
+		return isOnTrash;
+	}
+	
+	private void deleteBox(Box box2del) {
+		boxes.remove(box2del);
+		removeLines(box2del);
+		SavedState.removeBox(box2del);
+	}
+	
+	private void removeLine(Box box, int button) {
+		BoxButtonPair pair = new BoxButtonPair(box,
+				button);
+		for (BoxButtonPair[] line : lines) {
+			if (line[0].equals(pair)) {
+				Box otherBox = line[1].getBox();
+				int otherButton = line[1].getButton();
+				lines.remove(line);
+				SavedState.removeLine(line);
+				otherBox
+						.unsetButtonPressed(otherButton);
+				break;
+			} else if (line[1].equals(pair)) {
+				Box otherBox = line[0].getBox();
+				int otherButton = line[0].getButton();
+				lines.remove(line);
+				SavedState.removeLine(line);				
+				otherBox
+						.unsetButtonPressed(otherButton);
+				break;
+			}
+		}
+	}
+	
+	private void removeLines(Box box) {
+		for(int i=0;i<box.getNumOfButtons();i++) {
+			removeLine(box, i);
+		}
 	}
 
 }
