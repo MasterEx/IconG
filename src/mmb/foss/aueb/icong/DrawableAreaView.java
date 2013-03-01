@@ -33,6 +33,8 @@ public class DrawableAreaView extends View {
 	boolean drawingline = false;
 	boolean foundPair = false;
 	private int lineStartX, lineStartY, lineCurrentX, lineCurrentY;
+	private long tap;
+	private final int DOUBLE_TAP_INTERVAL = (int) (0.3 * 1000);
 
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -99,7 +101,14 @@ public class DrawableAreaView extends View {
 				selectedBox = box;
 				buttonPressed = box.isButton((int) event.getX(),
 						(int) event.getY());
-
+				// TODO double tap implementation
+				long tap = System.currentTimeMillis();
+				if(System.currentTimeMillis()-this.tap < DOUBLE_TAP_INTERVAL) {
+					System.out.println("this is double tap");
+				} else {
+					System.out.println("this is NOT double tap");
+				}
+				this.tap = tap;
 				if (buttonPressed == -1) {
 					pressedX = (int) event.getX();
 					pressedY = (int) event.getY();
@@ -107,7 +116,7 @@ public class DrawableAreaView extends View {
 					originalY = box.getY();
 				} else {
 					// my code
-					Log.e("wtf", "a " + buttonPressed);
+					Log.e("wtf", "a " + buttonPressed);					
 					if (!((buttonPressed + 1) <= box.getNoOfInputs())) {
 						int[] center = box.getButtonCenter(buttonPressed);
 						lineStartX = center[0];
