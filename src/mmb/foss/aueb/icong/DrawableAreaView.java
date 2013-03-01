@@ -192,9 +192,8 @@ public class DrawableAreaView extends View {
 					buttonHovered = boxHovered.isButton((int) event.getX(),
 							(int) event.getY());
 					if (buttonHovered != -1) {
-						// if we have drawned a line on FIXME another's box's
-						// button
-						if (buttonHovered < boxHovered.getNoOfInputs()) {
+						// if we have drawned a line on another's box's button
+						if (buttonHovered < boxHovered.getNoOfInputs() && !boxHovered.isPressed(buttonHovered)) {
 							// if we have drawned a line on another's box's
 							// input button
 							int[] center = boxHovered
