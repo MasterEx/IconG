@@ -152,19 +152,18 @@ public class DrawableAreaView extends View {
 						if (!box.isPressed(buttonPressed)) {
 							// if the button pressed wasn't pressed before
 							box.setButtonPressed(buttonPressed);
-							int[] center = box.getButtonCenter(buttonPressed);
-							lineStartX = center[0];
-							lineStartY = center[1];
-							lineCurrentX = lineStartX;
-							lineCurrentY = lineStartY;
-							drawingline = true;
 						} else {
 							// if the button pressed was pressed before deletes
-							// this connection/line and FIXME sets it ready for
-							// new line drawing
-							box.unsetButtonPressed(buttonPressed);
+							// this connection/line
+							// FIXME do not delete ALL the lines
 							removeLines(box);
 						}
+						int[] center = box.getButtonCenter(buttonPressed);
+						lineStartX = center[0];
+						lineStartY = center[1];
+						lineCurrentX = lineStartX;
+						lineCurrentY = lineStartY;
+						drawingline = true;
 					}
 					invalidate();
 					selectedBox = null;
