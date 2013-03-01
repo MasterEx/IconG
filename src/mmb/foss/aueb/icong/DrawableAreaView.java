@@ -91,7 +91,6 @@ public class DrawableAreaView extends View {
 					paint);
 		}
 		if (showTrash) {
-
 			c.drawBitmap(trash.getBitmap(), trashX, trashY, paint);
 		}
 	}
@@ -322,6 +321,10 @@ public class DrawableAreaView extends View {
 			box.setX(box.getX() + x);
 			box.setY(box.getY() + y);
 		}
+	}
+
+	public void hideTrash() {
+		showTrash = false;
 	}
 
 }
