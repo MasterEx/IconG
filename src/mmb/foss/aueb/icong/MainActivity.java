@@ -11,6 +11,7 @@ import mmb.foss.aueb.icong.boxes.ClipBox;
 import mmb.foss.aueb.icong.boxes.EdgesBox;
 import mmb.foss.aueb.icong.boxes.ForkBox;
 import mmb.foss.aueb.icong.boxes.HSV2RGBBox;
+import mmb.foss.aueb.icong.boxes.ImageFileBox;
 import mmb.foss.aueb.icong.boxes.InvertBox;
 import mmb.foss.aueb.icong.boxes.MixBox;
 import mmb.foss.aueb.icong.boxes.RGB2HSVBox;
@@ -124,6 +125,9 @@ public class MainActivity extends Activity {
 		Box box = null;
 		Context ctx = getBaseContext();
 		switch (boxes[index]) {
+		case ImageFile:
+			box = new ImageFileBox(ctx);
+			break;
 		case Camera:
 			box = new CameraBox(ctx);
 			break;

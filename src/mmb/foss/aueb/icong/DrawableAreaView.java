@@ -56,7 +56,7 @@ public class DrawableAreaView extends View {
 	}
 
 	protected void onDraw(Canvas c) {
-		if (WIDTH == 0) {
+		if (WIDTH == 0 || trash==null) {
 			WIDTH = this.getWidth();
 			HEIGHT = this.getHeight();
 			InputStream is = mContext.getResources().openRawResource(R.drawable.trash);
@@ -92,7 +92,8 @@ public class DrawableAreaView extends View {
 			c.drawLine(lineStartX, lineStartY, lineCurrentX, lineCurrentY,
 					paint);
 		}
-		if (showTrash) {			
+		if (showTrash) {
+			
 			c.drawBitmap(trash.getBitmap(), trashX, trashY, paint);
 		}
 	}
