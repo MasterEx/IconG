@@ -107,7 +107,6 @@ public class DrawableAreaView extends View {
 		box.setY(y);
 		box.setX(x);
 		boxes.add(box);
-		SavedState.addBox(box);
 		invalidate();
 	}
 
@@ -208,7 +207,6 @@ public class DrawableAreaView extends View {
 									new BoxButtonPair(box, buttonPressed),
 									new BoxButtonPair(boxHovered, buttonHovered) };
 							lines.add(line);
-							SavedState.addLine(line);
 							foundPair = true;
 						}
 					}
@@ -275,7 +273,6 @@ public class DrawableAreaView extends View {
 	private void deleteBox(Box box2del) {
 		boxes.remove(box2del);
 		removeLines(box2del);
-		SavedState.removeBox(box2del);
 	}
 
 	private void removeLine(Box box, int button) {
@@ -285,14 +282,12 @@ public class DrawableAreaView extends View {
 				Box otherBox = line[1].getBox();
 				int otherButton = line[1].getButton();
 				lines.remove(line);
-				SavedState.removeLine(line);
 				otherBox.unsetButtonPressed(otherButton);
 				break;
 			} else if (line[1].equals(pair)) {
 				Box otherBox = line[0].getBox();
 				int otherButton = line[0].getButton();
 				lines.remove(line);
-				SavedState.removeLine(line);
 				otherBox.unsetButtonPressed(otherButton);
 				break;
 			}

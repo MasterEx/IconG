@@ -20,8 +20,12 @@ public class SavedState {
 		boxes.remove(box);
 	}
 
-	public static void clear() {
+	public static void clearBoxes() {
 		boxes.clear();
+	}
+
+	public static void clearLines() {
+		lines.clear();
 	}
 
 	public static ArrayList<BoxButtonPair[]> getLines() {
