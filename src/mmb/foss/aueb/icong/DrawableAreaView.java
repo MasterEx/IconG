@@ -29,10 +29,10 @@ public class DrawableAreaView extends View {
 	private int WIDTH, HEIGHT;
 	private ArrayList<BoxButtonPair[]> lines = new ArrayList<BoxButtonPair[]>();
 	private Box box = null;
-	int buttonPressed = -1;
-	int buttonHovered = -1;
-	boolean drawingline = false;
-	boolean foundPair = false;
+	private int buttonPressed = -1;
+	private int buttonHovered = -1;
+	private boolean drawingline = false;
+	private boolean foundPair = false;
 	private int lineStartX, lineStartY, lineCurrentX, lineCurrentY;
 	private long tap;
 	private final int DOUBLE_TAP_INTERVAL = (int) (0.3 * 1000);
