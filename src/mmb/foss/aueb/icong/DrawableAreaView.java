@@ -147,7 +147,7 @@ public class DrawableAreaView extends View {
 					// if we have touched the box's button
 					showTrash = false;
 					possibleTrash = null;
-					if (!((buttonPressed + 1) <= box.getNoOfInputs())) {
+					if (buttonPressed >= box.getNoOfInputs()) {
 						// if button pressed is an output button
 						if (!box.isPressed(buttonPressed)) {
 							// if the button pressed wasn't pressed before
