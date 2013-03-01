@@ -117,8 +117,10 @@ public class MainActivity extends Activity {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		int boxIndex = Integer.parseInt(data.getData().toString());
-		canvas.addBox(getBox(boxIndex));
+		if(resultCode != 0) {
+			int boxIndex = Integer.parseInt(data.getData().toString());
+			canvas.addBox(getBox(boxIndex));
+		}
 	}
 
 	private Box getBox(int index) {
