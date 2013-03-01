@@ -59,7 +59,16 @@ public class CameraBox extends Box {
 	        	  // TODO Auto-generated method stub
 	        	  bitmapPicture
 	        	   = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
-	        	 setOutput(bitmapPicture, 0); 
+	        	  Log.e("yaw","picture taken"+bitmapPicture.toString());
+	        	 setOutput(bitmapPicture, 0);
+	        	 if(getOutput(0)==null)
+	        	 {
+	        		 Log.e("getOutput0","null");
+	        	 }
+	        	 else
+	        	 {
+	        		 Log.e("getOutput0",""+getOutput(0));
+	        	 }
 	        	 }};
 		}
 		else
@@ -79,9 +88,7 @@ public class CameraBox extends Box {
 				{
 					
 					camera.takePicture(null, null, myPictureCallback_JPG);
-					Log.e("!!!!!!!!!!!!!!",""+bitmapPicture.toString());
 				}
-				
 			}
 		});
 		dialog.show();
