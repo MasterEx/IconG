@@ -17,12 +17,20 @@ public class ValueEntryBox extends Box {
 		buttonY[0][1] = 30;
 		this.setNoOfInputs(0);
 		this.setNoOfOutpus(1);
+		this.setHasDialog(true);
 	}
 
 	@Override
 	public void function() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void showDialog(Context context)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -18,12 +18,20 @@ public class SliderBox extends Box {
 		this.setNoOfInputs(0);
 		this.setNoOfOutpus(1);
 		this.setOutput(6, 0);
+		this.setHasDialog(true);
 	}
 
 	@Override
 	public void function() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void showDialog(Context context)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

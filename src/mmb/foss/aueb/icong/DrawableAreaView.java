@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -130,9 +131,10 @@ public class DrawableAreaView extends View {
 				long tap = System.currentTimeMillis();
 				if (System.currentTimeMillis() - this.tap < DOUBLE_TAP_INTERVAL) {
 					// if we have double tapped inside a box
-					System.out.println("this is double tap");
+					if(box.HasDialog())
+						box.showDialog(getContext());
 				} else {
-					System.out.println("this is NOT double tap");
+					Log.e("double tap", "true");
 				}
 				this.tap = tap;
 				if (buttonPressed == -1) {

@@ -30,4 +30,11 @@ public class ScreenBox extends Box {
 		Log.e("Screen", "" + this.getInput(0));
 	}
 
+	@Override
+	public void showDialog(Context context)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

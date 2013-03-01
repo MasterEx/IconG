@@ -20,7 +20,7 @@ public abstract class Box {
 	protected boolean[] buttonPressed;
 	private int noOfInputs, noOfOutpus;
 	private Object[] inputs, outputs;
-
+	private boolean hasDialog = false ;
 	public Box(Context context, int id) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
@@ -183,7 +183,16 @@ public abstract class Box {
 	public void setInput(Object input, int index) {
 		this.inputs[index] = input;
 	}
+	public boolean HasDialog()
+	{
+		return hasDialog;
+	}
 
+	public void setHasDialog(boolean hasDialog)
+	{
+		this.hasDialog = hasDialog;
+	}
 	public abstract void function();
+	public abstract void showDialog(Context context);
 
 }

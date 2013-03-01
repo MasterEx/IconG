@@ -26,7 +26,7 @@ public class BlurBox extends Box {
 		buttonY[2][1] = 43;
 		this.setNoOfInputs(2);
 		this.setNoOfOutpus(1);
-
+		
 	}
 
 	@Override
@@ -42,6 +42,13 @@ public class BlurBox extends Box {
 			this.setOutput(yaw, 0);
 		}
 
+	}
+
+	@Override
+	public void showDialog(Context context)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

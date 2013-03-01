@@ -18,13 +18,20 @@ public class CameraBox extends Box {
 		this.setNoOfInputs(0);
 		this.setNoOfOutpus(1);
 		this.setOutput(5, 0);
-
+		this.setHasDialog(true);
 	}
 
 	@Override
 	public void function() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void showDialog(Context context)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

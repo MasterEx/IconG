@@ -29,4 +29,11 @@ public class RGB2HSVBox extends Box {
 
 	}
 
+	@Override
+	public void showDialog(Context context)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }
