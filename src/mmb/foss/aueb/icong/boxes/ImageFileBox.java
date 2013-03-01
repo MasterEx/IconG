@@ -36,7 +36,7 @@ public class ImageFileBox extends Box {
 	}
 
 	@Override
-	public void showDialog(final Context context)
+	public void showDialog(Context context)
 	{
 		 Dialog dialog = new Dialog(context);
          dialog.setContentView(R.layout.dialog);
@@ -63,8 +63,7 @@ public class ImageFileBox extends Box {
 			@Override
 			public void onClick(View arg0)
 			{
-				Toast.makeText(context, "Yawwwwwwwwwlo", Toast.LENGTH_LONG);
-				
+				//Toast.makeText(getContext(), "Yawwwwwwwwwlo", Toast.LENGTH_LONG);
 			}
 		});
          dialog.show();

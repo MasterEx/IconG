@@ -2,7 +2,8 @@
     package="mmb.foss.aueb.icong"
     android:versionCode="1"
     android:versionName="1.0" >
-
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-feature android:name="android.hardware.camera" />
     <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="15" />
@@ -20,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CameraActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.Camera" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>>
         <activity
             android:name=".SelectionActivity"
             android:label="@string/title_activity_main" >
