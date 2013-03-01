@@ -40,6 +40,7 @@ public class DrawableAreaView extends View {
 	private boolean showTrash;
 	private int trashX, trashY;
 	private Box possibleTrash;
+	private boolean moveScreen = false;
 
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -170,6 +171,9 @@ public class DrawableAreaView extends View {
 				// if we haven't touched inside a box
 				showTrash = false;
 				possibleTrash = null;
+				originalX = (int) event.getX();
+				originalY = (int) event.getY();
+				moveScreen = true;
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -212,18 +216,31 @@ public class DrawableAreaView extends View {
 					}
 				}
 			}
+			if (moveScreen) {
+				int currentX = (int) event.getX(), currentY = (int) event
+						.getY();
+				moveScreen(currentX - originalX, currentY - originalY);
+				originalX = currentX;
+				originalY = currentY;
+			}
 			invalidate();
 			break;
 		case MotionEvent.ACTION_UP:
-			drawingline = false;
-			selectedBox = null;
-			// if when drawing a line stops and we haven'd reached another box's
-			// input button then erase the line and unpress the button
-			if (!foundPair && buttonPressed != -1 && box != null)
-				if (!((buttonPressed + 1) <= box.getNoOfInputs()))
-					box.unsetButtonPressed(buttonPressed);
-			foundPair = false;
-			pressedX = pressedY = originalX = originalY = 0;
+			if (moveScreen) {
+				moveScreen = false;
+				originalX = originalY = 0;
+			} else {
+				drawingline = false;
+				selectedBox = null;
+				// if when drawing a line stops and we haven'd reached another
+				// box's
+				// input button then erase the line and unpress the button
+				if (!foundPair && buttonPressed != -1 && box != null)
+					if (!((buttonPressed + 1) <= box.getNoOfInputs()))
+						box.unsetButtonPressed(buttonPressed);
+				foundPair = false;
+				pressedX = pressedY = originalX = originalY = 0;
+			}
 			// TODO implement here to pou peftei
 			invalidate();
 			return false;
@@ -297,6 +314,13 @@ public class DrawableAreaView extends View {
 	private void removeLines(Box box) {
 		for (int i = 0; i < box.getNumOfButtons(); i++) {
 			removeLine(box, i);
+		}
+	}
+
+	private void moveScreen(int x, int y) {
+		for (Box box : boxes) {
+			box.setX(box.getX() + x);
+			box.setY(box.getY() + y);
 		}
 	}
 
