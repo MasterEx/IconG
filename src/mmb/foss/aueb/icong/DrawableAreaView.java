@@ -155,7 +155,6 @@ public class DrawableAreaView extends View {
 						} else {
 							// if the button pressed was pressed before deletes
 							// this connection/line
-							// FIXME do not delete ALL the lines
 							removeLine(box,buttonPressed);
 						}
 						int[] center = box.getButtonCenter(buttonPressed);
@@ -195,7 +194,7 @@ public class DrawableAreaView extends View {
 					if (buttonHovered != -1) {
 						// if we have drawned a line on FIXME another's box's
 						// button
-						if (((buttonHovered + 1) <= boxHovered.getNoOfInputs())) {
+						if (buttonHovered < boxHovered.getNoOfInputs()) {
 							// if we have drawned a line on another's box's
 							// input button
 							int[] center = boxHovered
