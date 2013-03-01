@@ -116,50 +116,52 @@ public class DrawableAreaView extends View {
 					originalY = box.getY();
 				} else {
 					// my code
-					Log.e("wtf", "a " + buttonPressed);					
-					if (!((buttonPressed + 1) <= box.getNoOfInputs())) {
-						int[] center = box.getButtonCenter(buttonPressed);
-						lineStartX = center[0];
-						lineStartY = center[1];
-						lineCurrentX = lineStartX;
-						lineCurrentY = lineStartY;
-						box.setButtonPressed(buttonPressed);
-						drawingline = true;
-					} else {
-						if (box.isPressed(buttonPressed)) {
-							box.unsetButtonPressed(buttonPressed);
-
-							BoxButtonPair pair = new BoxButtonPair(box,
-									buttonPressed);
-							boolean found = false;
-							for (BoxButtonPair[] line : lines) {
-								if (found = line[0].equals(pair)) {
-									selectedButtonBox = line[1].getBox();
-									selectedButton = line[1].getButton();
-									lines.remove(line);
-									SavedState.removeLine(line);
-									selectedButtonBox
-											.unsetButtonPressed(selectedButton);
-									break;
-								} else if (found = line[1].equals(pair)) {
-									selectedButtonBox = line[0].getBox();
-									selectedButton = line[0].getButton();
-									lines.remove(line);
-									SavedState.removeLine(line);
-									selectedButtonBox
-											.unsetButtonPressed(selectedButton);
-									break;
+					Log.e("wtf", "a " + buttonPressed);
+					if(!box.isPressed(buttonPressed)){
+						if (!((buttonPressed + 1) <= box.getNoOfInputs())) {
+							int[] center = box.getButtonCenter(buttonPressed);
+							lineStartX = center[0];
+							lineStartY = center[1];
+							lineCurrentX = lineStartX;
+							lineCurrentY = lineStartY;
+							box.setButtonPressed(buttonPressed);
+							drawingline = true;
+						} else {
+							if (box.isPressed(buttonPressed)) {
+								box.unsetButtonPressed(buttonPressed);
+	
+								BoxButtonPair pair = new BoxButtonPair(box,
+										buttonPressed);
+								boolean found = false;
+								for (BoxButtonPair[] line : lines) {
+									if (found = line[0].equals(pair)) {
+										selectedButtonBox = line[1].getBox();
+										selectedButton = line[1].getButton();
+										lines.remove(line);
+										SavedState.removeLine(line);
+										selectedButtonBox
+												.unsetButtonPressed(selectedButton);
+										break;
+									} else if (found = line[1].equals(pair)) {
+										selectedButtonBox = line[0].getBox();
+										selectedButton = line[0].getButton();
+										lines.remove(line);
+										SavedState.removeLine(line);
+										selectedButtonBox
+												.unsetButtonPressed(selectedButton);
+										break;
+									}
 								}
+								if (!found) {
+									selectedButton = -1;
+									selectedButtonBox = null;
+								}
+	
 							}
-							if (!found) {
-								selectedButton = -1;
-								selectedButtonBox = null;
-							}
-
 						}
+						invalidate();
+						selectedBox = null;
 					}
-					invalidate();
-					selectedBox = null;
 				}
 			}
 			break;
