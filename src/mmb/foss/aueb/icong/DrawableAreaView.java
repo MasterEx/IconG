@@ -28,9 +28,7 @@ public class DrawableAreaView extends View {
 	private int[] buttonCenter = new int[2];
 	private int WIDTH, HEIGHT;
 	private ArrayList<BoxButtonPair[]> lines = new ArrayList<BoxButtonPair[]>();
-	private int selectedButton = -1;
 	private Box box = null;
-	private Box selectedButtonBox = null;
 	int buttonPressed = -1;
 	int buttonHovered = -1;
 	boolean drawingline = false;
@@ -162,31 +160,10 @@ public class DrawableAreaView extends View {
 							drawingline = true;
 						} else {
 							// if the button pressed was pressed before deletes
-							// this connection/line and sets it ready for new
-							// line drawing
+							// this connection/line and FIXME sets it ready for
+							// new line drawing
 							box.unsetButtonPressed(buttonPressed);
-							BoxButtonPair pair = new BoxButtonPair(box,
-									buttonPressed);
-							boolean found = false;
-							for (BoxButtonPair[] line : lines) {
-								if (found = line[0].equals(pair)) {
-									selectedButtonBox = line[1].getBox();
-									selectedButton = line[1].getButton();
-									lines.remove(line);
-									SavedState.removeLine(line);
-									selectedButtonBox
-											.unsetButtonPressed(selectedButton);
-									break;
-								} else if (found = line[1].equals(pair)) {
-									selectedButtonBox = line[0].getBox();
-									selectedButton = line[0].getButton();
-									lines.remove(line);
-									SavedState.removeLine(line);
-									selectedButtonBox
-											.unsetButtonPressed(selectedButton);
-									break;
-								}
-							}
+							removeLines(box);
 						}
 					}
 					invalidate();
