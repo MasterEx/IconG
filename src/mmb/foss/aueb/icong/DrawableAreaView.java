@@ -58,16 +58,17 @@ public class DrawableAreaView extends View {
 			WIDTH = this.getWidth();
 			HEIGHT = this.getHeight();
 			InputStream is = mContext.getResources().openRawResource(R.drawable.trash);
-			Bitmap originalBitmap = BitmapFactory.decodeStream(is);
+			/*Bitmap originalBitmap = BitmapFactory.decodeStream(is);
 			int w = WIDTH/10, h = (w*originalBitmap.getHeight())/originalBitmap.getWidth();
 			trash = new BitmapDrawable(mContext.getResources(),
 					Bitmap.createScaledBitmap(originalBitmap,
 							w, h,
 							true));
+							*/
 		}
 		for (Box box : boxes) {
 			// TODO: Zooming to be removed
-			box.setZoom(1.3);
+			box.setZoom(1.8);
 			c.drawBitmap(box.getBitmap(), box.getX(), box.getY(), null);
 			for (int i = 0; i < box.getNumOfButtons(); i++) {
 				if (box.isPressed(i)) {
@@ -88,9 +89,9 @@ public class DrawableAreaView extends View {
 			c.drawLine(lineStartX, lineStartY, lineCurrentX, lineCurrentY,
 					paint);
 		}
-		if (showTrash) {			
+		/*if (showTrash) {			
 			c.drawBitmap(trash.getBitmap(), (WIDTH - trash.getBitmap().getWidth())/2, HEIGHT-40, paint);
-		}
+		}*/
 	}
 
 	public void addBox(Box box) {
@@ -134,52 +135,51 @@ public class DrawableAreaView extends View {
 				} else {
 					showTrash = false;
 					// my code
-					Log.e("wtf", "a " + buttonPressed);
-					if(!box.isPressed(buttonPressed)){
-						if (!((buttonPressed + 1) <= box.getNoOfInputs())) {
+					
+					if (!((buttonPressed + 1) <= box.getNoOfInputs())) {
+						if (!box.isPressed(buttonPressed)) {
+							box.setButtonPressed(buttonPressed);
 							int[] center = box.getButtonCenter(buttonPressed);
 							lineStartX = center[0];
 							lineStartY = center[1];
 							lineCurrentX = lineStartX;
 							lineCurrentY = lineStartY;
-							box.setButtonPressed(buttonPressed);
 							drawingline = true;
-						} else {
-							if (box.isPressed(buttonPressed)) {
-								box.unsetButtonPressed(buttonPressed);
-	
-								BoxButtonPair pair = new BoxButtonPair(box,
-										buttonPressed);
-								boolean found = false;
-								for (BoxButtonPair[] line : lines) {
-									if (found = line[0].equals(pair)) {
-										selectedButtonBox = line[1].getBox();
-										selectedButton = line[1].getButton();
-										lines.remove(line);
-										SavedState.removeLine(line);
-										selectedButtonBox
-												.unsetButtonPressed(selectedButton);
-										break;
-									} else if (found = line[1].equals(pair)) {
-										selectedButtonBox = line[0].getBox();
-										selectedButton = line[0].getButton();
-										lines.remove(line);
-										SavedState.removeLine(line);
-										selectedButtonBox
-												.unsetButtonPressed(selectedButton);
-										break;
-									}
+
+						}
+						else
+						{
+							box.unsetButtonPressed(buttonPressed);
+							BoxButtonPair pair = new BoxButtonPair(box,
+							buttonPressed);
+							boolean found = false;
+							for (BoxButtonPair[] line : lines) {
+								if (found = line[0].equals(pair)) {
+									selectedButtonBox = line[1].getBox();
+									selectedButton = line[1].getButton();
+									lines.remove(line);
+									SavedState.removeLine(line);
+									selectedButtonBox
+									.unsetButtonPressed(selectedButton);
+									break;
+								} else if (found = line[1].equals(pair)) {
+									selectedButtonBox = line[0].getBox();
+									selectedButton = line[0].getButton();
+									lines.remove(line);
+									SavedState.removeLine(line);
+									selectedButtonBox
+									.unsetButtonPressed(selectedButton);
+									break;
 								}
-								if (!found) {
-									selectedButton = -1;
-									selectedButtonBox = null;
-								}
-	
 							}
 						}
-						invalidate();
-						selectedBox = null;
-					}
+						
+					
+					} 
+					
+					
+					invalidate();
+					selectedBox = null;
 				}
 			} else {
 				showTrash = false;
@@ -223,9 +223,10 @@ public class DrawableAreaView extends View {
 		case MotionEvent.ACTION_UP:
 			drawingline = false;
 			selectedBox = null;
-			if (!foundPair && buttonPressed != -1 && box != null) {
-				box.unsetButtonPressed(buttonPressed);
-			}
+			if (!foundPair && buttonPressed != -1 && box != null )
+				if (!((buttonPressed + 1) <= box.getNoOfInputs()))
+					box.unsetButtonPressed(buttonPressed);
+			foundPair = false ;
 			pressedX = pressedY = originalX = originalY = 0;
 			// TODO implement here to pou peftei
 			invalidate();
