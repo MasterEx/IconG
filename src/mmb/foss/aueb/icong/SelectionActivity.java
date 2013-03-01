@@ -19,19 +19,20 @@ import android.widget.ListView;
  */
 public class SelectionActivity extends Activity {
 
-	private ImageView imagefileBox,cameraBox, screenBox, chanSplitBox, mixBox, chanMergeBox,
-			forkBox, valueEntryBox, sliderBox, blurBox, edgesBox, invertBox,
-			clipBox, rgb2hsvBox, hsv2rgbBox;
+	private ImageView imagefileBox, cameraBox, screenBox, chanSplitBox, mixBox,
+			chanMergeBox, forkBox, valueEntryBox, sliderBox, blurBox, edgesBox,
+			invertBox, clipBox, rgb2hsvBox, hsv2rgbBox;
 	// fixed size of entries, no need for ArrayList or other dynamic data set
 	private ImageView[] listImages = new ImageView[15];
-	private String[] imageNames = { "ImageFile","Camera", "Screen", "Channel Split", "Mix",
-			"Channel Merge", "Fork", "Value Entry", "Slider", "Blur", "Edges",
-			"Invert", "Clip", "RGB to HSV", "HSV to RGB" };
-	private String[] imageDescriptions = { "Gets/sets input/output to file","Gets input from the Camera",
-			"Outputs the result to the screen", "Splits the color channel",
-			"Mixes", "Merges the color channel", "Forks",
-			"Inputs usr defined values", "Inputs user defined values", "Blurs",
-			"Edges", "Inverts the image", "Clips", "", "" };
+	private String[] imageNames = { "ImageFile", "Camera", "Screen",
+			"Channel Split", "Mix", "Channel Merge", "Fork", "Value Entry",
+			"Slider", "Blur", "Edges", "Invert", "Clip", "RGB to HSV",
+			"HSV to RGB" };
+	private String[] imageDescriptions = { "Gets/sets input/output to file",
+			"Gets input from the Camera", "Outputs the result to the screen",
+			"Splits the color channel", "Mixes", "Merges the color channel",
+			"Forks", "Inputs usr defined values", "Inputs user defined values",
+			"Blurs", "Edges", "Inverts the image", "Clips", "", "" };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class SelectionActivity extends Activity {
 		setContentView(R.layout.selection_layout);
 		imagefileBox = new ImageView(getBaseContext());
 		imagefileBox.setImageResource(R.drawable.image_file);
-		listImages[0] = imagefileBox ;
+		listImages[0] = imagefileBox;
 		cameraBox = new ImageView(getBaseContext());
 		cameraBox.setImageResource(R.drawable.camera);
 		listImages[1] = cameraBox;
@@ -95,7 +96,7 @@ public class SelectionActivity extends Activity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				Intent selectedBox = new Intent();
-				Log.e("yaw",""+Uri.parse("" + arg2));
+				Log.e("yaw", "" + Uri.parse("" + arg2));
 				selectedBox.setData(Uri.parse("" + arg2));
 				setResult(RESULT_OK, selectedBox);
 				finish();

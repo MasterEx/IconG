@@ -3,11 +3,10 @@ package mmb.foss.aueb.icong.boxes;
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
 
-public class ImageFileBox extends Box
-{
+public class ImageFileBox extends Box {
 
-	public ImageFileBox(Context context){
-		super(context,R.drawable.image_file);
+	public ImageFileBox(Context context) {
+		super(context, R.drawable.image_file);
 		buttonX = new int[2][2];
 		buttonY = new int[2][2];
 		buttonPressed = new boolean[2];
@@ -24,9 +23,9 @@ public class ImageFileBox extends Box
 	}
 
 	@Override
-	public void function(){
+	public void function() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

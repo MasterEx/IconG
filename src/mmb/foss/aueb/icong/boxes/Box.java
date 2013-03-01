@@ -167,19 +167,19 @@ public abstract class Box {
 		this.noOfOutpus = noOfOutpus;
 		this.outputs = new Object[noOfOutpus];
 	}
-	
+
 	public Object getOutput(int index) {
 		return this.outputs[index];
 	}
-	
+
 	public void setOutput(Object output, int index) {
 		this.outputs[index] = output;
 	}
-	
+
 	public Object getInput(int index) {
 		return this.inputs[index];
 	}
-	
+
 	public void setInput(Object input, int index) {
 		this.inputs[index] = input;
 	}

@@ -64,7 +64,8 @@ public class MainActivity extends Activity {
 										- line[0].getBox().getNoOfInputs() + 1;
 								int buttonInput = line[1].getButton() + 1;
 								switch (buttonOutput) {
-								// TODO output = line[0].getBox().getOutput(buttonOutput-1);
+								// TODO output =
+								// line[0].getBox().getOutput(buttonOutput-1);
 								case 1:
 									output = line[0].getBox().getOutput(0);
 									break;
@@ -76,15 +77,16 @@ public class MainActivity extends Activity {
 									break;
 								}
 								switch (buttonInput) {
-								// TODO line[1].getBox().setInput(output,buttonInput-1);
+								// TODO
+								// line[1].getBox().setInput(output,buttonInput-1);
 								case 1:
-									line[1].getBox().setInput(output,0);
+									line[1].getBox().setInput(output, 0);
 									break;
 								case 2:
-									line[1].getBox().setInput(output,1);
+									line[1].getBox().setInput(output, 1);
 									break;
 								case 3:
-									line[1].getBox().setInput(output,2);
+									line[1].getBox().setInput(output, 2);
 									break;
 								}
 
@@ -117,7 +119,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(resultCode != 0) {
+		if (resultCode != 0) {
 			int boxIndex = Integer.parseInt(data.getData().toString());
 			canvas.addBox(getBox(boxIndex));
 		}

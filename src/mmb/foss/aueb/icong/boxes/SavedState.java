@@ -15,7 +15,7 @@ public class SavedState {
 	public static ArrayList<Box> getBoxes() {
 		return boxes;
 	}
-	
+
 	public static void removeBox(Box box) {
 		boxes.remove(box);
 	}

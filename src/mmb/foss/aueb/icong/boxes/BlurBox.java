@@ -39,7 +39,7 @@ public class BlurBox extends Box {
 			int yaw = (Integer) this.getInput(0);
 			yaw += (Integer) this.getInput(1);
 			Log.e("yoooooolo", "" + yaw);
-			this.setOutput(yaw,0);
+			this.setOutput(yaw, 0);
 		}
 
 	}

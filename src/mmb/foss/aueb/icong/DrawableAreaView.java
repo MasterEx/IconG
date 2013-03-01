@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -52,22 +51,22 @@ public class DrawableAreaView extends View {
 		WIDTH = MainActivity.width;
 		HEIGHT = MainActivity.height;
 		boxes = SavedState.getBoxes();
-		lines = SavedState.getLines();		
+		lines = SavedState.getLines();
 	}
 
 	protected void onDraw(Canvas c) {
-		if (WIDTH == 0 || trash==null) {
+		if (WIDTH == 0 || trash == null) {
 			WIDTH = this.getWidth();
 			HEIGHT = this.getHeight();
-			InputStream is = mContext.getResources().openRawResource(R.drawable.trash);
+			InputStream is = mContext.getResources().openRawResource(
+					R.drawable.trash);
 			Bitmap originalBitmap = BitmapFactory.decodeStream(is);
-			int w = WIDTH/10, h = (w*originalBitmap.getHeight())/originalBitmap.getWidth();
+			int w = WIDTH / 10, h = (w * originalBitmap.getHeight())
+					/ originalBitmap.getWidth();
 			trash = new BitmapDrawable(mContext.getResources(),
-					Bitmap.createScaledBitmap(originalBitmap,
-							w, h,
-							true));
-			trashX = (WIDTH - trash.getBitmap().getWidth())/2;
-			trashY = HEIGHT-40;
+					Bitmap.createScaledBitmap(originalBitmap, w, h, true));
+			trashX = (WIDTH - trash.getBitmap().getWidth()) / 2;
+			trashY = HEIGHT - 40;
 		}
 		for (Box box : boxes) {
 			// TODO: Zooming to be removed
@@ -93,7 +92,7 @@ public class DrawableAreaView extends View {
 					paint);
 		}
 		if (showTrash) {
-			
+
 			c.drawBitmap(trash.getBitmap(), trashX, trashY, paint);
 		}
 	}
@@ -117,24 +116,29 @@ public class DrawableAreaView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			if(showTrash && onTrash(event.getX(), event.getY())) {
+			if (showTrash && onTrash(event.getX(), event.getY())) {
+				// if trash icon is visible and clicked delete the possibleTrash
+				// box
 				deleteBox(possibleTrash);
 				possibleTrash = null;
 			}
 			box = getBoxTouched((int) event.getX(), (int) event.getY());
 			if (box != null) {
+				// if we have touched inside a box
 				selectedBox = box;
 				buttonPressed = box.isButton((int) event.getX(),
 						(int) event.getY());
 				// TODO double tap implementation
 				long tap = System.currentTimeMillis();
-				if(System.currentTimeMillis()-this.tap < DOUBLE_TAP_INTERVAL) {
+				if (System.currentTimeMillis() - this.tap < DOUBLE_TAP_INTERVAL) {
+					// if we have double tapped inside a box
 					System.out.println("this is double tap");
 				} else {
 					System.out.println("this is NOT double tap");
 				}
 				this.tap = tap;
 				if (buttonPressed == -1) {
+					// if we haven't touched the box's button
 					pressedX = (int) event.getX();
 					pressedY = (int) event.getY();
 					originalX = box.getX();
@@ -142,12 +146,13 @@ public class DrawableAreaView extends View {
 					showTrash = true;
 					possibleTrash = box;
 				} else {
+					// if we have touched the box's button
 					showTrash = false;
 					possibleTrash = null;
-					// my code
-					
 					if (!((buttonPressed + 1) <= box.getNoOfInputs())) {
+						// if button pressed is an output button
 						if (!box.isPressed(buttonPressed)) {
+							// if the button pressed wasn't pressed before
 							box.setButtonPressed(buttonPressed);
 							int[] center = box.getButtonCenter(buttonPressed);
 							lineStartX = center[0];
@@ -155,13 +160,13 @@ public class DrawableAreaView extends View {
 							lineCurrentX = lineStartX;
 							lineCurrentY = lineStartY;
 							drawingline = true;
-
-						}
-						else
-						{
+						} else {
+							// if the button pressed was pressed before deletes
+							// this connection/line and sets it ready for new
+							// line drawing
 							box.unsetButtonPressed(buttonPressed);
 							BoxButtonPair pair = new BoxButtonPair(box,
-							buttonPressed);
+									buttonPressed);
 							boolean found = false;
 							for (BoxButtonPair[] line : lines) {
 								if (found = line[0].equals(pair)) {
@@ -170,7 +175,7 @@ public class DrawableAreaView extends View {
 									lines.remove(line);
 									SavedState.removeLine(line);
 									selectedButtonBox
-									.unsetButtonPressed(selectedButton);
+											.unsetButtonPressed(selectedButton);
 									break;
 								} else if (found = line[1].equals(pair)) {
 									selectedButtonBox = line[0].getBox();
@@ -178,46 +183,50 @@ public class DrawableAreaView extends View {
 									lines.remove(line);
 									SavedState.removeLine(line);
 									selectedButtonBox
-									.unsetButtonPressed(selectedButton);
+											.unsetButtonPressed(selectedButton);
 									break;
 								}
 							}
 						}
-						
-					
-					} 
-					
-					
+					}
 					invalidate();
 					selectedBox = null;
 				}
 			} else {
+				// if we haven't touched inside a box
 				showTrash = false;
 				possibleTrash = null;
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if (selectedBox != null) {
+				// if we have selected a box by tapping once in it
 				selectedBox.setX((int) event.getX() - (pressedX - originalX));
 				selectedBox.setY((int) event.getY() - (pressedY - originalY));
 				invalidate();
 			}
 			if (drawingline) {
+				// if we have pressed a previously not pressed box's output
+				// button
 				lineCurrentX = (int) event.getX();
 				lineCurrentY = (int) event.getY();
 				Box boxHovered = getBoxTouched((int) event.getX(),
 						(int) event.getY());
 				if (boxHovered != null) {
+					// if we have drawned a line on another box
 					buttonHovered = boxHovered.isButton((int) event.getX(),
 							(int) event.getY());
 					if (buttonHovered != -1) {
+						// if we have drawned a line on FIXME another's box's
+						// button
 						if (((buttonHovered + 1) <= boxHovered.getNoOfInputs())) {
+							// if we have drawned a line on another's box's
+							// input button
 							int[] center = boxHovered
 									.getButtonCenter(buttonHovered);
 							lineStartX = center[0];
 							lineStartY = center[1];
 							boxHovered.setButtonPressed(buttonHovered);
-
 							drawingline = false;
 							BoxButtonPair[] line = {
 									new BoxButtonPair(box, buttonPressed),
@@ -234,10 +243,12 @@ public class DrawableAreaView extends View {
 		case MotionEvent.ACTION_UP:
 			drawingline = false;
 			selectedBox = null;
-			if (!foundPair && buttonPressed != -1 && box != null )
+			// if when drawing a line stops and we haven'd reached another box's
+			// input button then erase the line and unpress the button
+			if (!foundPair && buttonPressed != -1 && box != null)
 				if (!((buttonPressed + 1) <= box.getNoOfInputs()))
 					box.unsetButtonPressed(buttonPressed);
-			foundPair = false ;
+			foundPair = false;
 			pressedX = pressedY = originalX = originalY = 0;
 			// TODO implement here to pou peftei
 			invalidate();
@@ -275,48 +286,45 @@ public class DrawableAreaView extends View {
 		}
 		return null;
 	}
-	
+
 	private boolean onTrash(float f, float g) {
 		boolean isOnTrash = false;
-		if (f >= trashX && f <= (trashX + trash.getBitmap().getWidth()) && g >= trashY
-				&& g <= (trashY + trash.getBitmap().getHeight())) {
+		if (f >= trashX && f <= (trashX + trash.getBitmap().getWidth())
+				&& g >= trashY && g <= (trashY + trash.getBitmap().getHeight())) {
 			isOnTrash = true;
 		}
 		return isOnTrash;
 	}
-	
+
 	private void deleteBox(Box box2del) {
 		boxes.remove(box2del);
 		removeLines(box2del);
 		SavedState.removeBox(box2del);
 	}
-	
+
 	private void removeLine(Box box, int button) {
-		BoxButtonPair pair = new BoxButtonPair(box,
-				button);
+		BoxButtonPair pair = new BoxButtonPair(box, button);
 		for (BoxButtonPair[] line : lines) {
 			if (line[0].equals(pair)) {
 				Box otherBox = line[1].getBox();
 				int otherButton = line[1].getButton();
 				lines.remove(line);
 				SavedState.removeLine(line);
-				otherBox
-						.unsetButtonPressed(otherButton);
+				otherBox.unsetButtonPressed(otherButton);
 				break;
 			} else if (line[1].equals(pair)) {
 				Box otherBox = line[0].getBox();
 				int otherButton = line[0].getButton();
 				lines.remove(line);
-				SavedState.removeLine(line);				
-				otherBox
-						.unsetButtonPressed(otherButton);
+				SavedState.removeLine(line);
+				otherBox.unsetButtonPressed(otherButton);
 				break;
 			}
 		}
 	}
-	
+
 	private void removeLines(Box box) {
-		for(int i=0;i<box.getNumOfButtons();i++) {
+		for (int i = 0; i < box.getNumOfButtons(); i++) {
 			removeLine(box, i);
 		}
 	}
