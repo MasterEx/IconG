@@ -55,10 +55,11 @@ public class DrawableAreaView extends View {
 		HEIGHT = MainActivity.height;
 		boxes = SavedState.getBoxes();
 		lines = SavedState.getLines();
-		paint.setTextSize((float) (22*Box.getZoom()));
+		paint.setTextSize(23);
 	}
 
 	protected void onDraw(Canvas c) {
+		paint.setTextSize((float) (13*Box.getZoom()));
 		if (WIDTH == 0 || trash == null) {
 			WIDTH = this.getWidth();
 			HEIGHT = this.getHeight();

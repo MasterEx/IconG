@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tv_value_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="oldvalue : " />
+	<EditText
+        android:id="@+id/et_value_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:text="Value Entry" />
+    <Button
+        android:id="@+id/btn_value_entry_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Set" />
+</LinearLayout>

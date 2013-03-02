@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 public abstract class Box {
 
@@ -109,6 +110,7 @@ public abstract class Box {
 	}
 
 	public void setZoom(double zoom) {
+		Log.e("ZOOOOOM",""+this.zoom);
 		this.zoom = zoom;
 		image = new BitmapDrawable(context.getResources(),
 				Bitmap.createScaledBitmap(originalBitmap,
