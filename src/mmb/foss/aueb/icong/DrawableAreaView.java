@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import mmb.foss.aueb.icong.boxes.Box;
 import mmb.foss.aueb.icong.boxes.CameraBox;
 import mmb.foss.aueb.icong.boxes.SavedState;
+import mmb.foss.aueb.icong.boxes.ValueEntryBox;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -54,6 +55,7 @@ public class DrawableAreaView extends View {
 		HEIGHT = MainActivity.height;
 		boxes = SavedState.getBoxes();
 		lines = SavedState.getLines();
+		paint.setTextSize((float) (20*Box.getZoom()));
 	}
 
 	protected void onDraw(Canvas c) {
@@ -85,6 +87,13 @@ public class DrawableAreaView extends View {
 					if (box.getOutput(0)!=null)
 					{
 						c.drawBitmap((Bitmap) box.getOutput(0),null,new Rect(box.getX(),box.getY()+120,box.getX()+box.getWidth(),box.getY()+120+box.getWidth()), null);
+					}
+				}
+				if(box instanceof ValueEntryBox)
+				{
+					if(box.getOutput(0)!=null)
+					{
+						c.drawText(""+box.getOutput(0), box.getX()+10, box.getY()+10, paint);
 					}
 				}
 			}

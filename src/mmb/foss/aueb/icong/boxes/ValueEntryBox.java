@@ -18,6 +18,7 @@ public class ValueEntryBox extends Box {
 		this.setNoOfInputs(0);
 		this.setNoOfOutpus(1);
 		this.setHasDialog(true);
+		this.setOutput("Value Entry", 0);
 	}
 
 	@Override

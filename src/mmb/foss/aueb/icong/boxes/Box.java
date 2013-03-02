@@ -12,7 +12,7 @@ public abstract class Box {
 	private Context context;
 	protected BitmapDrawable image = null;
 	Bitmap originalBitmap;
-	protected double zoom = 1;
+	protected static double zoom = 1;
 	protected int width, height;
 	protected int x = 0, y = 0;
 	protected int[][] buttonX;
@@ -117,7 +117,10 @@ public abstract class Box {
 		width = image.getBitmap().getWidth();
 		height = image.getBitmap().getHeight();
 	}
-
+	public static double getZoom()
+	{
+		return zoom ;
+	}
 	public void setX(int x) {
 		this.x = x;
 	}
