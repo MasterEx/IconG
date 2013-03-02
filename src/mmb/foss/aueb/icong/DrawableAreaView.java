@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import mmb.foss.aueb.icong.boxes.Box;
+import mmb.foss.aueb.icong.boxes.CameraBox;
 import mmb.foss.aueb.icong.boxes.SavedState;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -12,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -77,6 +79,13 @@ public class DrawableAreaView extends View {
 					buttonCenter = box.getButtonCenter(i);
 					c.drawCircle(buttonCenter[0], buttonCenter[1],
 							box.getButtonRadius(i), paint);
+				}
+				if(box instanceof CameraBox)
+				{
+					if (box.getOutput(0)!=null)
+					{
+						c.drawBitmap((Bitmap) box.getOutput(0),null,new Rect(box.getX(),box.getY()+120,box.getX()+box.getWidth(),box.getY()+120+box.getWidth()), null);
+					}
 				}
 			}
 		}

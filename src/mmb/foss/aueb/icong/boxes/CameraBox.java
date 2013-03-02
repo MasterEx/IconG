@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.util.Log;
@@ -14,7 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 public class CameraBox extends Box {
-	Bitmap bitmapPicture;
+	Bitmap bitmapPicture,rotated;
 	PictureCallback myPictureCallback_JPG;
 	private Camera camera;
     private CameraPreview cPreview;
@@ -42,12 +43,13 @@ public class CameraBox extends Box {
 	@Override
 	public void showDialog(Context context)
 	{
-		Dialog dialog = new Dialog(context);
+		final Dialog dialog = new Dialog(context);
 		camera = getCameraInstance();
 		if(camera!=null)
 		{
 			dialog.setContentView(R.layout.camera_layout);
 			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
 			dialog.setTitle("Camera,press click");
 			cPreview = new CameraPreview(context, camera);
 	        FrameLayout preview = (FrameLayout) dialog.findViewById(R.id.camera_preview);
@@ -60,7 +62,14 @@ public class CameraBox extends Box {
 	        	  bitmapPicture
 	        	   = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
 	        	  Log.e("yaw","picture taken"+bitmapPicture.toString());
-	        	 setOutput(bitmapPicture, 0);
+	        	  Matrix matrix = new Matrix();
+	        	  matrix.postRotate(90);
+	        	  rotated = Bitmap.createBitmap(bitmapPicture, 0, 0,
+	        			  bitmapPicture.getWidth(),bitmapPicture.getHeight(),
+	        			  matrix,true);
+	        	  
+	        	 
+	        	 setOutput(rotated, 0);
 	        	 if(getOutput(0)==null)
 	        	 {
 	        		 Log.e("getOutput0","null");
@@ -86,7 +95,6 @@ public class CameraBox extends Box {
 			{
 				if(camera!=null)
 				{
-					
 					camera.takePicture(null, null, myPictureCallback_JPG);
 				}
 			}

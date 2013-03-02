@@ -9,7 +9,11 @@
     android:id="@+id/camera_preview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    />
+    >
+
+        
+
+    </FrameLayout>
     <Button
     android:id="@+id/button_save"
     android:text="Click"
@@ -18,4 +22,5 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     />
+
 </RelativeLayout>
