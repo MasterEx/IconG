@@ -173,7 +173,8 @@ public abstract class Box {
 	}
 
 	public void setOutput(Object output, int index) {
-		this.outputs[index] = output;
+		this.outputs[index] = new Object();
+		this.outputs[index] = output ;
 	}
 
 	public Object getInput(int index) {
@@ -181,6 +182,7 @@ public abstract class Box {
 	}
 
 	public void setInput(Object input, int index) {
+		this.inputs[index] = new Object() ;
 		this.inputs[index] = input;
 	}
 	public boolean HasDialog()

@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 public class CameraBox extends Box {
-	Bitmap bitmapPicture,rotated;
+	Button click ;
 	PictureCallback myPictureCallback_JPG;
 	private Camera camera;
     private CameraPreview cPreview;
@@ -33,7 +33,7 @@ public class CameraBox extends Box {
 		this.setNoOfOutpus(1);
 		this.setHasDialog(true);
 	}
-
+	
 	@Override
 	public void function() {
 		
@@ -43,6 +43,9 @@ public class CameraBox extends Box {
 	@Override
 	public void showDialog(Context context)
 	{
+		
+		myPictureCallback_JPG = null ;
+		System.gc();
 		final Dialog dialog = new Dialog(context);
 		camera = getCameraInstance();
 		if(camera!=null)
@@ -54,31 +57,7 @@ public class CameraBox extends Box {
 			cPreview = new CameraPreview(context, camera);
 	        FrameLayout preview = (FrameLayout) dialog.findViewById(R.id.camera_preview);
 	        preview.addView(cPreview);
-	        myPictureCallback_JPG = new PictureCallback(){
-
-	        	 @Override
-	        	 public void onPictureTaken(byte[] arg0, Camera arg1) {
-	        	  // TODO Auto-generated method stub
-	        	  bitmapPicture
-	        	   = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
-	        	  Log.e("yaw","picture taken"+bitmapPicture.toString());
-	        	  Matrix matrix = new Matrix();
-	        	  matrix.postRotate(90);
-	        	  rotated = Bitmap.createBitmap(bitmapPicture, 0, 0,
-	        			  bitmapPicture.getWidth(),bitmapPicture.getHeight(),
-	        			  matrix,true);
-	        	  
-	        	 
-	        	 setOutput(rotated, 0);
-	        	 if(getOutput(0)==null)
-	        	 {
-	        		 Log.e("getOutput0","null");
-	        	 }
-	        	 else
-	        	 {
-	        		 Log.e("getOutput0",""+getOutput(0));
-	        	 }
-	        	 }};
+	        
 		}
 		else
 		{
@@ -86,7 +65,7 @@ public class CameraBox extends Box {
 			dialog.setCancelable(true);
 			dialog.setCanceledOnTouchOutside(true);
 		}
-		Button click = (Button) dialog.findViewById(R.id.button_save);
+		click = (Button) dialog.findViewById(R.id.button_save);
 		click.setOnClickListener(new View.OnClickListener()
 		{
 			
@@ -95,7 +74,45 @@ public class CameraBox extends Box {
 			{
 				if(camera!=null)
 				{
+					myPictureCallback_JPG = new PictureCallback(){
+
+				        @Override
+				        public void onPictureTaken(byte[] arg0, Camera arg1) {
+				        	  
+				        	Bitmap bitmapPicture = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
+				        	
+				        	Log.e("yaw","picture taken"+bitmapPicture.toString());
+				        	Matrix matrix = new Matrix();
+				        	matrix.postRotate(90);
+				        	Bitmap small = Bitmap.createScaledBitmap(bitmapPicture,640 , 800, true);
+				        	Bitmap rotated = Bitmap.createBitmap(small, 0, 0,
+				        		  small.getWidth(),small.getHeight(),matrix,true);
+				        	
+				        	
+				        	setOutput(rotated, 0);
+				        	bitmapPicture.recycle();
+				        	bitmapPicture = null ;
+				        	System.gc();
+				        	small.recycle();
+				        	small=null;
+				        	System.gc();
+				        	//rotated.recycle();
+							//rotated = null ;
+							//System.gc();
+				        	 if(getOutput(0)==null)
+				        	 {
+				        		 Log.e("getOutput0","null");
+				        	 }
+				        	 else
+				        	 {
+				        		 Log.e("getOutput0",""+getOutput(0));
+				        	 }
+				        	 }};
 					camera.takePicture(null, null, myPictureCallback_JPG);
+					
+					click.setEnabled(false);
+					//click.setActivated(false);
+					System.gc();
 				}
 			}
 		});
@@ -111,5 +128,6 @@ public class CameraBox extends Box {
         }
         return c;
     }
+	
 
 }
