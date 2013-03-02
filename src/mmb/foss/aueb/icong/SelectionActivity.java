@@ -60,7 +60,7 @@ public class SelectionActivity extends Activity {
 		forkBox.setImageResource(R.drawable.fork);
 		listImages[6] = forkBox;
 		valueEntryBox = new ImageView(getBaseContext());
-		valueEntryBox.setImageResource(R.drawable.value_entry);
+		valueEntryBox.setImageResource(R.drawable.value_entry_preview);
 		listImages[7] = valueEntryBox;
 		sliderBox = new ImageView(getBaseContext());
 		sliderBox.setImageResource(R.drawable.slider);

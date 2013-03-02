@@ -55,7 +55,7 @@ public class DrawableAreaView extends View {
 		HEIGHT = MainActivity.height;
 		boxes = SavedState.getBoxes();
 		lines = SavedState.getLines();
-		paint.setTextSize((float) (20*Box.getZoom()));
+		paint.setTextSize((float) (22*Box.getZoom()));
 	}
 
 	protected void onDraw(Canvas c) {
@@ -93,7 +93,8 @@ public class DrawableAreaView extends View {
 				{
 					if(box.getOutput(0)!=null)
 					{
-						c.drawText(""+box.getOutput(0), box.getX()+10, box.getY()+10, paint);
+						c.drawText(""+box.getOutput(0), (float)(box.getX()+20*Box.getZoom()),
+								(float)(box.getY()+box.getHeight()-15*Box.getZoom()), paint);
 					}
 				}
 			}
@@ -150,6 +151,7 @@ public class DrawableAreaView extends View {
 					// if we have double tapped inside a box
 					if(box.HasDialog())
 						box.showDialog(getContext());
+					invalidate();
 				} else {
 					Log.e("double tap", "true");
 				}
