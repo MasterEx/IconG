@@ -29,8 +29,8 @@ public class SliderBox extends Box {
 		this.setNoOfOutpus(1);
 		this.setOutput(6, 0);
 		this.setHasDialog(true);
-		this.setOutput((int)125, 0);
-		
+		this.setOutput((int) 125, 0);
+
 	}
 
 	@Override
@@ -38,67 +38,65 @@ public class SliderBox extends Box {
 		// TODO Auto-generated method stub
 
 	}
-	public void drawThingy(Canvas canvas,Bitmap btmp)
-	{
+
+	public void drawThingy(Canvas canvas, Bitmap btmp) {
 		int number = (Integer) getOutput(0);
-		int startX = (int) (getX()+11*Box.getZoom()) ;
-		int startY = (int) (getY()+20*Box.getZoom());
-		Log.e("Yolo,inside thingy",""+Box.getZoom());
-		float width = (float) (87*Box.getZoom());
-		float starting_position_x =(width/256)*number +startX-3 ;
-		float starting_position_y = startY -btmp.getHeight()/2 ;
-		canvas.drawBitmap(btmp, starting_position_x, 
-				starting_position_y, new Paint());
-		
+		int startX = (int) (getX() + 11 * zoom);
+		int startY = (int) (getY() + 20 * zoom);
+		Log.e("Yolo,inside thingy", "" + zoom);
+		float width = (float) (87 * zoom);
+		float starting_position_x = (width / 256) * number + startX - 3;
+		float starting_position_y = startY - btmp.getHeight() / 2;
+		canvas.drawBitmap(btmp, starting_position_x, starting_position_y,
+				new Paint());
+
 	}
+
 	@Override
-	public void showDialog(Context context)
-	{
-		Dialog dialog= new Dialog(context);
+	public void showDialog(Context context) {
+		Dialog dialog = new Dialog(context);
 		dialog.setContentView(R.layout.slider_layout);
 		dialog.setTitle("Slider");
 		dialog.setCancelable(true);
 		dialog.setCanceledOnTouchOutside(true);
 		TextView tvold = (TextView) dialog.findViewById(R.id.slider_textView1);
-		final TextView tvnew = (TextView) dialog.findViewById(R.id.slider_textView2);
-		final SeekBar sb = (SeekBar)dialog.findViewById(R.id.slider_seekBar1);
-		Button btn = (Button)dialog.findViewById(R.id.slider_button1);
-		tvold.setText("Old value : "+getOutput(0));
-		
+		final TextView tvnew = (TextView) dialog
+				.findViewById(R.id.slider_textView2);
+		final SeekBar sb = (SeekBar) dialog.findViewById(R.id.slider_seekBar1);
+		Button btn = (Button) dialog.findViewById(R.id.slider_button1);
+		tvold.setText("Old value : " + getOutput(0));
+
 		sb.setMax(255);
 		sb.setProgress((Integer) getOutput(0));
 		OnSeekBarChangeListener sbCustomListener = new OnSeekBarChangeListener() {
 			@Override
-		    public void onStopTrackingTouch(SeekBar seekBar)
-			{
-		            
-		    }
+			public void onStopTrackingTouch(SeekBar seekBar) {
 
-		    @Override
-		    public void onStartTrackingTouch(SeekBar sb)
-		    {
-		            
-		    }
-		    @Override
-		    public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) 
-		    {
-		    	//sb.setProgress(progress);
-		    	tvnew.setText("New value : "+sb.getProgress());
-		           
-		    }
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar sb) {
+
+			}
+
+			@Override
+			public void onProgressChanged(SeekBar sb, int progress,
+					boolean fromUser) {
+				// sb.setProgress(progress);
+				tvnew.setText("New value : " + sb.getProgress());
+
+			}
 		};
 		sb.setOnSeekBarChangeListener(sbCustomListener);
-		btn.setOnClickListener(new View.OnClickListener()
-		{
-			
+		btn.setOnClickListener(new View.OnClickListener() {
+
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				setOutput(sb.getProgress(), 0);
-				
+
 			}
 		});
 		dialog.show();
-	}	
+	}
 
 }
