@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Object output = null;
+				Log.e("numberoflines",""+SavedState.getLines().size());
 				for (int y = 0; y < SavedState.getLines().size(); y++) {
 					for (int i = 0; i < SavedState.getLines().size(); i++) {
 						BoxButtonPair[] line = SavedState.getLine(i);
