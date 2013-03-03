@@ -48,6 +48,7 @@ public class CameraBox extends Box {
 		final Dialog dialog = new Dialog(context);
 		camera = getCameraInstance();
 		if (camera != null) {
+			Log.e("PER","camera not null");
 			dialog.setContentView(R.layout.camera_layout);
 			dialog.setCancelable(true);
 			dialog.setCanceledOnTouchOutside(true);
@@ -58,6 +59,7 @@ public class CameraBox extends Box {
 			preview.addView(cPreview);
 
 		} else {
+			Log.e("PER","camera null");
 			dialog.setTitle("Camera not found");
 			dialog.setCancelable(true);
 			dialog.setCanceledOnTouchOutside(true);
