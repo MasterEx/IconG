@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import mmb.foss.aueb.icong.boxes.Box;
 import mmb.foss.aueb.icong.boxes.CameraBox;
 import mmb.foss.aueb.icong.boxes.SavedState;
+import mmb.foss.aueb.icong.boxes.ScreenBox;
 import mmb.foss.aueb.icong.boxes.SliderBox;
 import mmb.foss.aueb.icong.boxes.ValueEntryBox;
 import android.content.Context;
@@ -107,6 +108,15 @@ public class DrawableAreaView extends View {
 					{
 						((SliderBox) box).drawThingy(c, sliderThingy);
 					}
+				}
+				if(box instanceof ScreenBox)
+				{
+					if(box.getInput(0)!=null)
+					{
+						c.drawBitmap((Bitmap) box.getInput(0),null,new Rect(box.getX(),box.getY()+120,box.getX()+box.getWidth(),box.getY()+120+box.getWidth()), null);
+
+					}
+					
 				}
 			}
 		}
