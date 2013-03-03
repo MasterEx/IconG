@@ -29,7 +29,7 @@ public abstract class Box {
 		InputStream is = context.getResources().openRawResource(id);
 		originalBitmap = BitmapFactory.decodeStream(is);
 		image = new BitmapDrawable(context.getResources(),
-				Bitmap.createScaledBitmap(originalBitmap,
+						Bitmap.createScaledBitmap(originalBitmap,
 						originalBitmap.getWidth(), originalBitmap.getHeight(),
 						true));
 		width = image.getBitmap().getWidth();
