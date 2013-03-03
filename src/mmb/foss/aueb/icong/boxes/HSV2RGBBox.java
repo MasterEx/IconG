@@ -2,6 +2,8 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 
 public class HSV2RGBBox extends Box {
 
@@ -25,7 +27,15 @@ public class HSV2RGBBox extends Box {
 
 	@Override
 	public void function() {
-		// TODO Auto-generated method stub
+		
+		Bitmap src = null;
+		
+		if (this.getInput(0) == null) {
+			return ;
+		} else {
+			src = (Bitmap) this.getInput(0);
+		}
+		
 
 	}
 
