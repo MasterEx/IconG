@@ -63,7 +63,7 @@ public class SelectionActivity extends Activity {
 		valueEntryBox.setImageResource(R.drawable.value_entry_preview);
 		listImages[7] = valueEntryBox;
 		sliderBox = new ImageView(getBaseContext());
-		sliderBox.setImageResource(R.drawable.slider);
+		sliderBox.setImageResource(R.drawable.slider_preview);
 		listImages[8] = sliderBox;
 		blurBox = new ImageView(getBaseContext());
 		blurBox.setImageResource(R.drawable.blur);

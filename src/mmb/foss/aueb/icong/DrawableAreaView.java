@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import mmb.foss.aueb.icong.boxes.Box;
 import mmb.foss.aueb.icong.boxes.CameraBox;
 import mmb.foss.aueb.icong.boxes.SavedState;
+import mmb.foss.aueb.icong.boxes.SliderBox;
 import mmb.foss.aueb.icong.boxes.ValueEntryBox;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -41,6 +42,7 @@ public class DrawableAreaView extends View {
 	private long tap;
 	private final int DOUBLE_TAP_INTERVAL = (int) (0.3 * 1000);
 	private BitmapDrawable trash;
+	Bitmap sliderThingy ;
 	private boolean showTrash;
 	private int trashX, trashY;
 	private Box possibleTrash;
@@ -55,6 +57,7 @@ public class DrawableAreaView extends View {
 		HEIGHT = MainActivity.height;
 		boxes = SavedState.getBoxes();
 		lines = SavedState.getLines();
+		sliderThingy = BitmapFactory.decodeResource(getResources(), R.drawable.sliderthingy);
 		paint.setTextSize(23);
 	}
 
@@ -96,6 +99,13 @@ public class DrawableAreaView extends View {
 					{
 						c.drawText(""+box.getOutput(0), (float)(box.getX()+20*Box.getZoom()),
 								(float)(box.getY()+box.getHeight()-15*Box.getZoom()), paint);
+					}
+				}
+				if(box instanceof SliderBox)
+				{
+					if(box.getOutput(0)!=null)
+					{
+						((SliderBox) box).drawThingy(c, sliderThingy);
 					}
 				}
 			}
