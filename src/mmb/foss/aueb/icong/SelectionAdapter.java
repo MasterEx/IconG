@@ -1,5 +1,7 @@
 package mmb.foss.aueb.icong;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,13 +13,14 @@ import android.widget.TextView;
 
 public class SelectionAdapter extends BaseAdapter {
 
-	private ImageView[] imageList;
-	private String[] textList, descList;
+	private ArrayList<ImageView> imageList = new ArrayList<ImageView>();
+	private ArrayList<String> textList = new ArrayList<String>(),
+			descList = new ArrayList<String>();
 	private static LayoutInflater inflater = null;
 	private Activity activity;
 
-	public SelectionAdapter(Activity activity, ImageView[] imageList,
-			String[] textList, String[] descList) {
+	public SelectionAdapter(Activity activity, ArrayList<ImageView> imageList,
+			ArrayList<String> textList, ArrayList<String> descList) {
 		// TODO Auto-generated constructor stub
 		this.imageList = imageList;
 		this.textList = textList;
@@ -30,7 +33,7 @@ public class SelectionAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return imageList.length;
+		return imageList.size();
 	}
 
 	@Override
@@ -55,9 +58,9 @@ public class SelectionAdapter extends BaseAdapter {
 		TextView boxName = (TextView) view.findViewById(R.id.box_name);
 		TextView boxDescription = (TextView) view
 				.findViewById(R.id.box_description);
-		box.setImageDrawable(imageList[position].getDrawable());
-		boxName.setText(textList[position]);
-		boxDescription.setText(descList[position]);
+		box.setImageDrawable(imageList.get(position).getDrawable());
+		boxName.setText(textList.get(position));
+		boxDescription.setText(descList.get(position));
 
 		return view;
 	}

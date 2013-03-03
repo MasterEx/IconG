@@ -12,16 +12,17 @@ public abstract class Box {
 
 	private Context context;
 	protected BitmapDrawable image = null;
-	Bitmap originalBitmap;
-	protected static double zoom = 1;
-	protected int width, height;
-	protected int x = 0, y = 0;
+	private Bitmap originalBitmap;
+	protected float zoom = 1;
+	protected int originalWidth, originalHeight;
+	protected float x = 0, y = 0;
 	protected int[][] buttonX;
 	protected int[][] buttonY;
 	protected boolean[] buttonPressed;
 	private int noOfInputs, noOfOutpus;
 	private Object[] inputs, outputs;
-	private boolean hasDialog = false ;
+	private boolean hasDialog = false;
+
 	public Box(Context context, int id) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
@@ -32,8 +33,8 @@ public abstract class Box {
 						Bitmap.createScaledBitmap(originalBitmap,
 						originalBitmap.getWidth(), originalBitmap.getHeight(),
 						true));
-		width = image.getBitmap().getWidth();
-		height = image.getBitmap().getHeight();
+		originalWidth = image.getBitmap().getWidth();
+		originalHeight = image.getBitmap().getHeight();
 	}
 
 	public Bitmap getBitmap() {
@@ -45,12 +46,10 @@ public abstract class Box {
 	public int isButton(int x, int y) {
 		if (buttonX != null) {
 			for (int i = 0; i < buttonX.length; i++) {
-				int bx0 = (int) (buttonX[i][0] * zoom);
-				int bx1 = (int) (buttonX[i][1] * zoom);
-				int by0 = (int) (buttonY[i][0] * zoom);
-				int by1 = (int) (buttonY[i][1] * zoom);
-				System.out.println("IN BUTTON " + x + " " + y + " " + (bx0 + x)
-						+ " " + bx1 + x + " ");
+				float bx0 = (buttonX[i][0] * zoom);
+				float bx1 = (buttonX[i][1] * zoom);
+				float by0 = (buttonY[i][0] * zoom);
+				float by1 = (buttonY[i][1] * zoom);
 				if (x >= bx0 + this.x && x <= bx1 + this.x && y >= by0 + this.y
 						&& y <= by1 + this.y) {
 					return i;
@@ -60,21 +59,21 @@ public abstract class Box {
 		return -1;
 	}
 
-	public int[] getButtonCenter(int index) {
-		int[] xy = new int[2];
-		int bx0 = (int) (buttonX[index][0] * zoom);
-		int bx1 = (int) (buttonX[index][1] * zoom);
-		int by0 = (int) (buttonY[index][0] * zoom);
-		int by1 = (int) (buttonY[index][1] * zoom);
+	public float[] getButtonCenter(int index) {
+		float[] xy = new float[2];
+		float bx0 = (buttonX[index][0] * zoom);
+		float bx1 = (buttonX[index][1] * zoom);
+		float by0 = (buttonY[index][0] * zoom);
+		float by1 = (buttonY[index][1] * zoom);
 		xy[0] = this.x + bx0 + ((bx1 - bx0) / 2);
 		xy[1] = this.y + by0 + ((by1 - by0) / 2);
 		return xy;
 	}
 
-	public int getButtonRadius(int index) {
-		int r;
-		int bx0 = (int) (buttonX[index][0] * zoom);
-		int bx1 = (int) (buttonX[index][1] * zoom);
+	public float getButtonRadius(int index) {
+		float r;
+		float bx0 = (buttonX[index][0] * zoom);
+		float bx1 = (buttonX[index][1] * zoom);
 		r = (bx1 - bx0) / 2;
 		return r;
 	}
@@ -82,8 +81,8 @@ public abstract class Box {
 	// returns if the (posx,posy) is on box
 	public boolean isOnBox(int posx, int posy) {
 		boolean isOnBox = false;
-		if (posx >= x && posx <= (x + width) && posy >= y
-				&& posy <= (y + height)) {
+		if (posx >= x && posx <= (x + getWidth()) && posy >= y
+				&& posy <= (y + getHeight())) {
 			isOnBox = true;
 		}
 		return isOnBox;
@@ -109,49 +108,60 @@ public abstract class Box {
 		return this.buttonPressed[index];
 	}
 
-	public void setZoom(double zoom) {
+	public void setZoom(float zoom) {
+		if (this.x == this.zoom)
+			this.x = 0;
+		else
+			this.x = this.x / this.zoom;
+		if (this.y == this.zoom)
+			this.y = 0;
+		else
+			this.y = this.y / this.zoom;
 		this.zoom = zoom;
 		image = new BitmapDrawable(context.getResources(),
 				Bitmap.createScaledBitmap(originalBitmap,
 						(int) (originalBitmap.getWidth() * zoom),
 						(int) (originalBitmap.getHeight() * zoom), true));
-		width = image.getBitmap().getWidth();
-		height = image.getBitmap().getHeight();
-	}
-	public static double getZoom()
-	{
-		return zoom ;
-	}
-	public void setX(int x) {
-		this.x = x;
+		if (this.x == 0)
+			this.x = this.x + zoom;
+		else
+			this.x = this.x * zoom;
+		if (this.y == 0)
+			this.y = this.y + zoom;
+		else
+			this.y = this.y * zoom;
 	}
 
-	public void setY(int y) {
+	public void setX(float f) {
+		this.x = f;
+	}
+
+	public void setY(float y) {
 		this.y = y;
 	}
 
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 
-	public int getXX() {
-		return x + width;
+	public float getXX() {
+		return x + getWidth();
 	}
 
-	public int getYY() {
-		return y + height;
+	public float getYY() {
+		return y + getHeight();
 	}
 
-	public int getWidth() {
-		return width;
+	public float getWidth() {
+		return originalWidth * zoom;
 	}
 
-	public int getHeight() {
-		return height;
+	public float getHeight() {
+		return originalHeight * zoom;
 	}
 
 	public int getNoOfInputs() {
@@ -177,8 +187,8 @@ public abstract class Box {
 	}
 
 	public void setOutput(Object output, int index) {
-		Log.e("yaw","index is"+index+"for object "+output.toString());
-		outputs[index] = output ;
+		Log.e("yaw", "index is" + index + "for object " + output.toString());
+		outputs[index] = output;
 	}
 
 	public Object getInput(int index) {
@@ -186,19 +196,20 @@ public abstract class Box {
 	}
 
 	public void setInput(Object input, int index) {
-		this.inputs[index] = new Object() ;
+		this.inputs[index] = new Object();
 		this.inputs[index] = input;
 	}
-	public boolean HasDialog()
-	{
+
+	public boolean HasDialog() {
 		return hasDialog;
 	}
 
-	public void setHasDialog(boolean hasDialog)
-	{
+	public void setHasDialog(boolean hasDialog) {
 		this.hasDialog = hasDialog;
 	}
+
 	public abstract void function();
+
 	public abstract void showDialog(Context context);
 	
 	public boolean isGrayscale(Bitmap b) {

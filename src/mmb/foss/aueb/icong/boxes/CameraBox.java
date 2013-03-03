@@ -15,10 +15,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 public class CameraBox extends Box {
-	Button click ;
+	Button click;
 	PictureCallback myPictureCallback_JPG;
 	private Camera camera;
-    private CameraPreview cPreview;
+	private CameraPreview cPreview;
+
 	public CameraBox(Context context) {
 		// TODO Auto-generated constructor stub
 		super(context, R.drawable.camera);
@@ -33,100 +34,95 @@ public class CameraBox extends Box {
 		this.setNoOfOutpus(1);
 		this.setHasDialog(true);
 	}
-	
+
 	@Override
 	public void function() {
-		
 
 	}
 
 	@Override
-	public void showDialog(Context context)
-	{
-		
-		myPictureCallback_JPG = null ;
+	public void showDialog(Context context) {
+
+		myPictureCallback_JPG = null;
 		System.gc();
 		final Dialog dialog = new Dialog(context);
 		camera = getCameraInstance();
-		if(camera!=null)
-		{
+		if (camera != null) {
+			Log.e("PER","camera not null");
 			dialog.setContentView(R.layout.camera_layout);
 			dialog.setCancelable(true);
 			dialog.setCanceledOnTouchOutside(true);
 			dialog.setTitle("Camera,press click");
 			cPreview = new CameraPreview(context, camera);
-	        FrameLayout preview = (FrameLayout) dialog.findViewById(R.id.camera_preview);
-	        preview.addView(cPreview);
-	        
-		}
-		else
-		{
+			FrameLayout preview = (FrameLayout) dialog
+					.findViewById(R.id.camera_preview);
+			preview.addView(cPreview);
+
+		} else {
+			Log.e("PER","camera null");
 			dialog.setTitle("Camera not found");
 			dialog.setCancelable(true);
 			dialog.setCanceledOnTouchOutside(true);
 		}
 		click = (Button) dialog.findViewById(R.id.button_save);
-		click.setOnClickListener(new View.OnClickListener()
-		{
+		click.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
-				if(camera!=null)
-				{
-					myPictureCallback_JPG = new PictureCallback(){
+			public void onClick(View v) {
+				if (camera != null) {
+					myPictureCallback_JPG = new PictureCallback() {
 
-				        @Override
-				        public void onPictureTaken(byte[] arg0, Camera arg1) {
-				        	  
-				        	Bitmap bitmapPicture = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
-				        	
-				        	Log.e("yaw","picture taken"+bitmapPicture.toString());
-				        	Matrix matrix = new Matrix();
-				        	matrix.postRotate(90);
-				        	Bitmap small = Bitmap.createScaledBitmap(bitmapPicture,640 , 800, true);
-				        	Bitmap rotated = Bitmap.createBitmap(small, 0, 0,
-				        		  small.getWidth(),small.getHeight(),matrix,true);
-				        	
-				        	
-				        	setOutput(rotated, 0);
-				        	bitmapPicture.recycle();
-				        	bitmapPicture = null ;
-				        	System.gc();
-				        	small.recycle();
-				        	small=null;
-				        	System.gc();
-				        	//rotated.recycle();
-							//rotated = null ;
-							//System.gc();
-				        	 if(getOutput(0)==null)
-				        	 {
-				        		 Log.e("getOutput0","null");
-				        	 }
-				        	 else
-				        	 {
-				        		 Log.e("getOutput0",""+getOutput(0));
-				        	 }
-				        	 }};
+						@Override
+						public void onPictureTaken(byte[] arg0, Camera arg1) {
+
+							Bitmap bitmapPicture = BitmapFactory
+									.decodeByteArray(arg0, 0, arg0.length);
+
+							Log.e("yaw",
+									"picture taken" + bitmapPicture.toString());
+							Matrix matrix = new Matrix();
+							matrix.postRotate(90);
+							Bitmap small = Bitmap.createScaledBitmap(
+									bitmapPicture, 640, 800, true);
+							Bitmap rotated = Bitmap.createBitmap(small, 0, 0,
+									small.getWidth(), small.getHeight(),
+									matrix, true);
+
+							setOutput(rotated, 0);
+							bitmapPicture.recycle();
+							bitmapPicture = null;
+							System.gc();
+							small.recycle();
+							small = null;
+							System.gc();
+							// rotated.recycle();
+							// rotated = null ;
+							// System.gc();
+							if (getOutput(0) == null) {
+								Log.e("getOutput0", "null");
+							} else {
+								Log.e("getOutput0", "" + getOutput(0));
+							}
+						}
+					};
 					camera.takePicture(null, null, myPictureCallback_JPG);
-					
+
 					click.setEnabled(false);
-					//click.setActivated(false);
+					// click.setActivated(false);
 					System.gc();
 				}
 			}
 		});
 		dialog.show();
-		
+
 	}
-	public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open();
-        }
-        catch (Exception e){
-        }
-        return c;
-    }
-	
+
+	public static Camera getCameraInstance() {
+		Camera c = null;
+		try {
+			c = Camera.open();
+		} catch (Exception e) {
+		}
+		return c;
+	}
 
 }

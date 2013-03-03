@@ -31,10 +31,9 @@ public class ScreenBox extends Box {
 	}
 
 	@Override
-	public void showDialog(Context context)
-	{
+	public void showDialog(Context context) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

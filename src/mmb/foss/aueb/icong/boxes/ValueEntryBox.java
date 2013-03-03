@@ -33,49 +33,43 @@ public class ValueEntryBox extends Box {
 	}
 
 	@Override
-	public void showDialog(Context context)
-	{
-		
+	public void showDialog(Context context) {
+
 		Dialog dialog = new Dialog(context);
 		dialog.setCancelable(true);
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.setTitle(R.id.tv_value_entry);
 		dialog.setContentView(R.layout.value_entry_layout);
-		final EditText et = (EditText)dialog.findViewById(R.id.et_value_entry);
-		TextView tv = (TextView)dialog.findViewById(R.id.tv_value_entry);
-		Button btn = (Button)dialog.findViewById(R.id.btn_value_entry_set);
-		
-		et.setOnClickListener(new View.OnClickListener()
-		{
-			
+		final EditText et = (EditText) dialog.findViewById(R.id.et_value_entry);
+		TextView tv = (TextView) dialog.findViewById(R.id.tv_value_entry);
+		Button btn = (Button) dialog.findViewById(R.id.btn_value_entry_set);
+
+		et.setOnClickListener(new View.OnClickListener() {
+
 			@Override
-			public void onClick(View v)
-			{
-				if(getOutput(0)==null || getOutput(0).equals("Value Entry"))
+			public void onClick(View v) {
+				if (getOutput(0) == null || getOutput(0).equals("Value Entry"))
 					et.setText("");
 				else
-					et.setText(""+getOutput(0));
-				
+					et.setText("" + getOutput(0));
+
 			}
 		});
-		if(getOutput(0)==null)
-			tv.setText("oldvalue : "+" don't have one");
+		if (getOutput(0) == null)
+			tv.setText("oldvalue : " + " don't have one");
 		else
-			tv.setText("oldvalue : "+getOutput(0));
-		btn.setOnClickListener(new View.OnClickListener()
-		{
-			
+			tv.setText("oldvalue : " + getOutput(0));
+		btn.setOnClickListener(new View.OnClickListener() {
+
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				float number = Float.parseFloat(et.getText().toString());
-				setOutput((int)number, 0);
+				setOutput((int) number, 0);
 			}
 		});
-		
+
 		dialog.show();
-		
-		
+
 	}
 
 }

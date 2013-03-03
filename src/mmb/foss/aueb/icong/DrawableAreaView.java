@@ -29,9 +29,9 @@ public class DrawableAreaView extends View {
 	private ArrayList<Box> boxes = new ArrayList<Box>();
 	private Context mContext;
 	private Box selectedBox = null;
-	private int pressedX, pressedY;
-	private int originalX, originalY;
-	private int[] buttonCenter = new int[2];
+	private float pressedX, pressedY;
+	private float originalX, originalY;
+	private float[] buttonCenter = new float[2];
 	private int WIDTH, HEIGHT;
 	private ArrayList<BoxButtonPair[]> lines = new ArrayList<BoxButtonPair[]>();
 	private Box box = null;
@@ -39,15 +39,22 @@ public class DrawableAreaView extends View {
 	private int buttonHovered = -1;
 	private boolean drawingline = false;
 	private boolean foundPair = false;
-	private int lineStartX, lineStartY, lineCurrentX, lineCurrentY;
+	private float lineStartX, lineStartY, lineCurrentX, lineCurrentY;
 	private long tap;
 	private final int DOUBLE_TAP_INTERVAL = (int) (0.3 * 1000);
 	private BitmapDrawable trash;
-	Bitmap sliderThingy ;
+	Bitmap sliderThingy;
 	private boolean showTrash;
 	private int trashX, trashY;
 	private Box possibleTrash;
 	private boolean moveScreen = false;
+	private boolean zoom = false;
+	private float zoomValue = 1;
+	private float[] zoomOriginalX = new float[2];
+	private float[] zoomOriginalY = new float[2];
+	private final float ZOOM_FACTOR = (float) 0.01;
+	private final float MAX_ZOOM = 5;
+	private final float MIN_ZOOM = 1;
 
 	public DrawableAreaView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -58,12 +65,13 @@ public class DrawableAreaView extends View {
 		HEIGHT = MainActivity.height;
 		boxes = SavedState.getBoxes();
 		lines = SavedState.getLines();
-		sliderThingy = BitmapFactory.decodeResource(getResources(), R.drawable.sliderthingy);
+		sliderThingy = BitmapFactory.decodeResource(getResources(),
+				R.drawable.sliderthingy);
 		paint.setTextSize(23);
 	}
 
 	protected void onDraw(Canvas c) {
-		paint.setTextSize((float) (13*Box.getZoom()));
+		paint.setTextSize((float) (13 * zoomValue));
 		if (WIDTH == 0 || trash == null) {
 			WIDTH = this.getWidth();
 			HEIGHT = this.getHeight();
@@ -79,7 +87,9 @@ public class DrawableAreaView extends View {
 		}
 		for (Box box : boxes) {
 			// TODO: Zooming to be removed
-			box.setZoom(1.8);
+			if (zoom) {
+				box.setZoom(zoomValue);
+			}
 			c.drawBitmap(box.getBitmap(), box.getX(), box.getY(), null);
 			for (int i = 0; i < box.getNumOfButtons(); i++) {
 				if (box.isPressed(i)) {
@@ -87,43 +97,46 @@ public class DrawableAreaView extends View {
 					c.drawCircle(buttonCenter[0], buttonCenter[1],
 							box.getButtonRadius(i), paint);
 				}
-				if(box instanceof CameraBox)
-				{
-					if (box.getOutput(0)!=null)
-					{
-						c.drawBitmap((Bitmap) box.getOutput(0),null,new Rect(box.getX(),box.getY()+120,box.getX()+box.getWidth(),box.getY()+120+box.getWidth()), null);
+				if (box instanceof CameraBox) {
+					if (box.getOutput(0) != null) {
+						c.drawBitmap((Bitmap) box.getOutput(0), null, new Rect(
+								(int) box.getX(), (int) box.getY() + 120,
+								(int) box.getX() + (int) box.getWidth(),
+								(int) box.getY() + 120 + (int) box.getWidth()),
+								null);
 					}
 				}
-				if(box instanceof ValueEntryBox)
-				{
-					if(box.getOutput(0)!=null)
-					{
-						c.drawText(""+box.getOutput(0), (float)(box.getX()+20*Box.getZoom()),
-								(float)(box.getY()+box.getHeight()-15*Box.getZoom()), paint);
+				if (box instanceof ValueEntryBox) {
+					if (box.getOutput(0) != null) {
+						c.drawText(
+								"" + box.getOutput(0),
+								(float) (box.getX() + 20 * zoomValue),
+								(float) (box.getY() + box.getHeight() - 15 * zoomValue),
+								paint);
 					}
 				}
-				if(box instanceof SliderBox)
-				{
-					if(box.getOutput(0)!=null)
-					{
+				if (box instanceof SliderBox) {
+					if (box.getOutput(0) != null) {
 						((SliderBox) box).drawThingy(c, sliderThingy);
 					}
 				}
-				if(box instanceof ScreenBox)
-				{
-					if(box.getInput(0)!=null)
-					{
-						c.drawBitmap((Bitmap) box.getInput(0),null,new Rect(box.getX(),box.getY()+120,box.getX()+box.getWidth(),box.getY()+120+box.getWidth()), null);
+				if (box instanceof ScreenBox) {
+					if (box.getInput(0) != null) {
+						c.drawBitmap((Bitmap) box.getInput(0), null, new Rect(
+								(int) box.getX(), (int) box.getY() + 120,
+								(int) box.getX() + (int) box.getWidth(),
+								(int) box.getY() + 120 + (int) box.getWidth()),
+								null);
 
 					}
-					
+
 				}
 			}
 		}
 		for (BoxButtonPair[] line : lines) {
 			Box box0 = line[0].getBox(), box1 = line[1].getBox();
 			int button0 = line[0].getButton(), button1 = line[1].getButton();
-			int[] center0 = box0.getButtonCenter(button0), center1 = box1
+			float[] center0 = box0.getButtonCenter(button0), center1 = box1
 					.getButtonCenter(button1);
 			c.drawLine(center0[0], center0[1], center1[0], center1[1], paint);
 		}
@@ -137,7 +150,8 @@ public class DrawableAreaView extends View {
 	}
 
 	public void addBox(Box box) {
-		int x, y;
+		float x, y;
+		box.setZoom(zoomValue);
 		if (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 			y = getLower() + 15;
 			x = (WIDTH / 2) - (box.getWidth() / 2);
@@ -152,7 +166,27 @@ public class DrawableAreaView extends View {
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
-		switch (event.getAction()) {
+		switch (event.getAction() & MotionEvent.ACTION_MASK) {
+		case MotionEvent.ACTION_POINTER_DOWN:
+			if (event.getPointerCount() >= 2) {
+				// at least two fingers
+				Log.e("PER", "HERE IS DOWN");
+				float x0 = event.getX(0), y0 = event.getY(0), x1 = event
+						.getX(1), y1 = event.getY(1);
+				zoomOriginalX[0] = x0;
+				zoomOriginalY[0] = y0;
+				zoomOriginalX[1] = x1;
+				zoomOriginalY[1] = y1;
+				// Get the center of the 2 fingers touch
+				// zoomCenterX = (float) (Math.min(x0, x1) + Math.abs(x0-x1)/2);
+				// zoomCenterY = (float) (Math.min(y0, y1) + Math.abs(y0-y1)/2);
+				zoom = true;
+			}
+			break;
+		case MotionEvent.ACTION_POINTER_UP:
+			if (event.getPointerCount() <= 2)
+				zoom = false;
+			break;
 		case MotionEvent.ACTION_DOWN:
 			if (showTrash && onTrash(event.getX(), event.getY())) {
 				// if trash icon is visible and clicked delete the possibleTrash
@@ -170,7 +204,7 @@ public class DrawableAreaView extends View {
 				long tap = System.currentTimeMillis();
 				if (System.currentTimeMillis() - this.tap < DOUBLE_TAP_INTERVAL) {
 					// if we have double tapped inside a box
-					if(box.HasDialog())
+					if (box.HasDialog())
 						box.showDialog(getContext());
 					invalidate();
 				} else {
@@ -199,7 +233,7 @@ public class DrawableAreaView extends View {
 							// this connection/line
 							removeLine(box, buttonPressed);
 						}
-						int[] center = box.getButtonCenter(buttonPressed);
+						float[] center = box.getButtonCenter(buttonPressed);
 						lineStartX = center[0];
 						lineStartY = center[1];
 						lineCurrentX = lineStartX;
@@ -219,10 +253,26 @@ public class DrawableAreaView extends View {
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
-			if (selectedBox != null) {
+			if (zoom) {
+				float x0 = event.getX(0), y0 = event.getY(0), x1 = event
+						.getX(1), y1 = event.getY(1);
+				float diff = (float) (Math.sqrt(Math.pow((x1 - x0), 2)
+						+ Math.pow((y1 - y0), 2)) - Math.sqrt(Math.pow(
+						(zoomOriginalX[1] - zoomOriginalX[0]), 2)
+						+ Math.pow((zoomOriginalY[1] - zoomOriginalY[0]), 2)));
+				zoomValue = (zoomValue + diff * ZOOM_FACTOR);
+				if (zoomValue > MAX_ZOOM)
+					zoomValue = MAX_ZOOM;
+				else if (zoomValue < MIN_ZOOM)
+					zoomValue = MIN_ZOOM;
+				zoomOriginalX[0] = x0;
+				zoomOriginalY[0] = y0;
+				zoomOriginalX[1] = x1;
+				zoomOriginalY[1] = y1;
+			} else if (selectedBox != null) {
 				// if we have selected a box by tapping once in it
-				selectedBox.setX((int) event.getX() - (pressedX - originalX));
-				selectedBox.setY((int) event.getY() - (pressedY - originalY));
+				selectedBox.setX(event.getX() - (pressedX - originalX));
+				selectedBox.setY(event.getY() - (pressedY - originalY));
 				invalidate();
 			}
 			if (drawingline) {
@@ -243,7 +293,7 @@ public class DrawableAreaView extends View {
 								&& !box.equals(boxHovered)) {
 							// if we have drawned a line on another's box's
 							// input button
-							int[] center = boxHovered
+							float[] center = boxHovered
 									.getButtonCenter(buttonHovered);
 							lineStartX = center[0];
 							lineStartY = center[1];
@@ -291,8 +341,8 @@ public class DrawableAreaView extends View {
 	}
 
 	// returns the lower pixel of the lower element
-	private int getLower() {
-		int y = 0;
+	private float getLower() {
+		float y = 0;
 		for (Box box : boxes) {
 			if (y < box.getYY())
 				y = box.getYY();
@@ -301,8 +351,8 @@ public class DrawableAreaView extends View {
 	}
 
 	// returns the righter pixel of the righter element
-	private int getRighter() {
-		int x = 0;
+	private float getRighter() {
+		float x = 0;
 		for (Box box : boxes) {
 			if (x < box.getXX())
 				x = box.getXX();
@@ -359,10 +409,10 @@ public class DrawableAreaView extends View {
 		}
 	}
 
-	private void moveScreen(int x, int y) {
+	private void moveScreen(float f, float g) {
 		for (Box box : boxes) {
-			box.setX(box.getX() + x);
-			box.setY(box.getY() + y);
+			box.setX(box.getX() + f);
+			box.setY(box.getY() + g);
 		}
 	}
 
