@@ -110,7 +110,6 @@ public abstract class Box {
 	}
 
 	public void setZoom(double zoom) {
-		Log.e("ZOOOOOM",""+this.zoom);
 		this.zoom = zoom;
 		image = new BitmapDrawable(context.getResources(),
 				Bitmap.createScaledBitmap(originalBitmap,
@@ -178,8 +177,8 @@ public abstract class Box {
 	}
 
 	public void setOutput(Object output, int index) {
-		this.outputs[index] = new Object();
-		this.outputs[index] = output ;
+		Log.e("yaw","index is"+index+"for object "+output.toString());
+		outputs[index] = output ;
 	}
 
 	public Object getInput(int index) {
