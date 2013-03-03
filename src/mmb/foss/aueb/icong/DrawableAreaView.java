@@ -45,7 +45,7 @@ public class DrawableAreaView extends View {
 	private BitmapDrawable trash;
 	Bitmap sliderThingy;
 	private boolean showTrash;
-	private int trashX, trashY;
+	private float trashX, trashY;
 	private Box possibleTrash;
 	private boolean moveScreen = false;
 	private boolean zoom = false;
@@ -63,6 +63,7 @@ public class DrawableAreaView extends View {
 		paint.setColor(Color.BLACK);
 		WIDTH = MainActivity.width;
 		HEIGHT = MainActivity.height;
+		Log.e("PER"," W1 "+WIDTH);
 		boxes = SavedState.getBoxes();
 		lines = SavedState.getLines();
 		sliderThingy = BitmapFactory.decodeResource(getResources(),
@@ -78,12 +79,18 @@ public class DrawableAreaView extends View {
 			InputStream is = mContext.getResources().openRawResource(
 					R.drawable.trash);
 			Bitmap originalBitmap = BitmapFactory.decodeStream(is);
-			int w = WIDTH / 10, h = (w * originalBitmap.getHeight())
-					/ originalBitmap.getWidth();
-			trash = new BitmapDrawable(mContext.getResources(),
-					Bitmap.createScaledBitmap(originalBitmap, w, h, true));
+			if (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {				
+				int w = WIDTH / 10, h = (w * originalBitmap.getHeight())
+						/ originalBitmap.getWidth();
+				trash = new BitmapDrawable(mContext.getResources(),
+						Bitmap.createScaledBitmap(originalBitmap, w, h, true));
+			} else {
+				int h = HEIGHT / 10, w =  (h * originalBitmap.getWidth())/ originalBitmap.getHeight();
+				trash = new BitmapDrawable(mContext.getResources(),
+						Bitmap.createScaledBitmap(originalBitmap, w, h, true));
+			}
 			trashX = (WIDTH - trash.getBitmap().getWidth()) / 2;
-			trashY = HEIGHT - 40;
+			trashY = HEIGHT - trash.getBitmap().getHeight();
 		}
 		for (Box box : boxes) {
 			// TODO: Zooming to be removed
