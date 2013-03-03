@@ -2,6 +2,8 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 
 public class ChanSplitBox extends Box {
 
@@ -33,8 +35,48 @@ public class ChanSplitBox extends Box {
 
 	@Override
 	public void function() {
-		// TODO Auto-generated method stub
+		
+		if(this.getOutput(0) != null && this.getOutput(1) != null && this.getOutput(2) != null)
+			return;
+		
+		Bitmap src = null;
 
+		if (this.getInput(0) == null) {
+			return;
+		} else {
+			
+			src = (Bitmap) this.getInput(0);
+		
+		}
+		
+		int width = src.getWidth();
+		int height = src.getHeight();
+		
+		Bitmap out1 = Bitmap.createBitmap(width, height, src.getConfig());
+		Bitmap out2 = Bitmap.createBitmap(width, height, src.getConfig());
+		Bitmap out3 = Bitmap.createBitmap(width, height, src.getConfig());
+		
+		int pix, R, G, B;
+		
+		for(int x=0; x<width; x++)
+		{
+			for(int y=0; y<height; y++)
+			{
+				pix = src.getPixel(x, y);
+				
+				R = Color.red(pix);
+				G = Color.green(pix);
+				B = Color.blue(pix);
+				
+				out1.setPixel(x, y, R);
+				out2.setPixel(x, y, G);
+				out3.setPixel(x, y, B);
+			}
+		}
+
+		this.setOutput(out1, 0);
+		this.setOutput(out2, 1);
+		this.setOutput(out3, 2);
 	}
 
 	@Override
