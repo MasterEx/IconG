@@ -200,5 +200,43 @@ public abstract class Box {
 	}
 	public abstract void function();
 	public abstract void showDialog(Context context);
+	
+	public boolean isGrayscale(Bitmap b) {
+		
+		boolean ig = true;
+		
+		for(int x=0; x< b.getWidth(); x++) 
+		{
+			for(int y=0; y<b.getHeight(); y++) 
+			{
+				
+				int pix = b.getPixel(x, y);
+				
+				if(!isGrayscalePix(pix)) 
+				{	
+					ig = false;
+					break;
+				}
+			}
+			if(!ig) {
+				break;
+			}
+		}
+		
+		return ig;
+	}
+	
+	private boolean isGrayscalePix(int pix) {
+		
+		int alpha = (pix & 0xFF000000) >> 24;
+	    int red   = (pix & 0x00FF0000) >> 16;
+	    int green = (pix & 0x0000FF00) >> 8;
+	    int blue  = (pix & 0x000000FF);
+
+	    if( alpha == 0 && red == green && green == blue ) 
+	    	return true;
+	    else 
+	    	return false;
+	}
 
 }

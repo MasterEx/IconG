@@ -2,6 +2,8 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 
 public class ClipBox extends Box {
 
@@ -29,8 +31,58 @@ public class ClipBox extends Box {
 
 	@Override
 	public void function() {
-		// TODO Auto-generated method stub
-
+		
+		Bitmap src = null;
+		int threshold = 170;
+		
+		if (this.getInput(0) == null) {
+			return ;
+		} else {
+			src = (Bitmap) this.getInput(0);
+			
+			if(this.getInput(1) != null)
+				threshold = (Integer) this.getInput(1);
+		}
+		
+		int width = src.getWidth();
+		int height = src.getHeight();
+		
+		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
+		
+		boolean gray = isGrayscale(src);
+		int pix, A, R, G, B;
+		
+		for(int x=0; x<width; x++) 
+		{
+			for(int y=0; y<height; y++)
+			{
+				pix = src.getPixel(x, y);
+				
+				A = Color.alpha(pix);
+				R = Color.red(pix);
+				G = Color.green(pix);
+				B = Color.blue(pix);
+				
+				if(gray) 
+				{
+					if(pix > threshold)
+						pix = 255;
+					
+					out.setPixel(x, y, pix)
+				} 
+				else
+				{
+					if(R>threshold)
+						R = 255;
+					if(G>threshold)
+						G = 255;
+					if(B>threshold)
+						B = 255;
+					
+					out.setPixel(x, y, Color.argb(A, R, G, B));
+				}
+			}
+		}
 	}
 
 	@Override
