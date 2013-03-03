@@ -35,6 +35,9 @@ public class ForkBox extends Box {
 	@Override
 	public void function() {
 		
+		if(this.getOutput(0) != null && this.getOutput(1) != null && this.getOutput(2) != null)
+			return;
+		
 		Bitmap src = null;
 		
 		if (this.getInput(0) == null) {

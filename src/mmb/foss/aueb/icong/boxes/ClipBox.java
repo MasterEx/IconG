@@ -32,6 +32,9 @@ public class ClipBox extends Box {
 	@Override
 	public void function() {
 		
+		if(this.getOutput(0) != null)
+			return;
+		
 		Bitmap src = null;
 		int threshold = 170;
 		

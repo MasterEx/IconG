@@ -36,6 +36,9 @@ public class MixBox extends Box {
 	@Override
 	public void function() {
 		
+		if(this.getOutput(0) != null)
+			return;
+		
 		Bitmap src1 = null;
 		Bitmap src2 = null;
 		double bias = 0.5;
