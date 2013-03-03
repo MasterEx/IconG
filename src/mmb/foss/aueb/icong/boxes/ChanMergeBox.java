@@ -2,6 +2,8 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 
 public class ChanMergeBox extends Box {
 
@@ -33,8 +35,45 @@ public class ChanMergeBox extends Box {
 
 	@Override
 	public void function() {
-		// TODO Auto-generated method stub
+		
+		if(this.getOutput(0) != null)
+			return;
+		
+		Bitmap src1, src2, src3;
+		
+		src1 = src2 = src3 =  null;
 
+		if (this.getInput(0) == null || this.getInput(1) == null || this.getInput(2) == null) {
+			return ;
+		} else {
+			
+			src1 = (Bitmap) this.getInput(0);
+			src2 = (Bitmap) this.getInput(1);
+			src3 = (Bitmap) this.getInput(2);
+		}
+		
+		int width = src1.getWidth();
+		int height = src1.getHeight();
+		
+		Bitmap out = Bitmap.createBitmap(width, height, src1.getConfig());
+		
+		int pix1, pix2, pix3, A;
+		
+		for(int x=0; x<width; x++) 
+		{
+			for(int y=0; y<height; y++)
+			{
+				pix1 = src1.getPixel(x, y);
+				pix2 = src2.getPixel(x, y);
+				pix3 = src3.getPixel(x, y);
+				
+				A = Color.alpha(pix1);
+				
+				out.setPixel(x, y, Color.argb(A, pix1, pix2, pix3));
+			}
+		}
+		
+		this.setOutput(out, 0);
 	}
 
 	@Override
