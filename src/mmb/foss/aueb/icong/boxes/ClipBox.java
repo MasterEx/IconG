@@ -65,10 +65,10 @@ public class ClipBox extends Box {
 				
 				if(gray) 
 				{
-					if(pix > threshold)
-						pix = 255;
+					if(R > threshold)
+						R = 255;
 					
-					out.setPixel(x, y, pix)
+					out.setPixel(x, y, R);
 				} 
 				else
 				{
@@ -83,6 +83,7 @@ public class ClipBox extends Box {
 				}
 			}
 		}
+		setOutput(out, 0);
 	}
 
 	@Override
