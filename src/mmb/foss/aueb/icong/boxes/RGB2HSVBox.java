@@ -28,10 +28,13 @@ public class RGB2HSVBox extends Box {
 	@Override
 	public void function() {
 		
+		if(this.getOutput(0) != null)
+			return;
+		
 		Bitmap src = null;
 		
 		if (this.getInput(0) == null) {
-			return ;
+			return;
 		} else {
 			src = (Bitmap) this.getInput(0);
 		}
@@ -49,11 +52,11 @@ public class RGB2HSVBox extends Box {
 			{
 				pix = src.getPixel(x, y);
 				Color.colorToHSV(pix, hsv);
-			
+				out.setPixel(x, y, pix);
 			}
 		}
 		
-		
+		this.setOutput(out, 0);
 		
 	}
 
