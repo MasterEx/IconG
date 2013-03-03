@@ -2,6 +2,8 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 
 public class EdgesBox extends Box {
 
@@ -26,7 +28,13 @@ public class EdgesBox extends Box {
 	@Override
 	public void function() {
 		// TODO Auto-generated method stub
-
+		if (this.getInput(0) == null) {
+			// do nothing
+		} else {
+			Bitmap in0 = (Bitmap) this.getInput(0);
+			
+			this.setOutput(in0, 0);
+		}
 	}
 
 	@Override
@@ -35,5 +43,29 @@ public class EdgesBox extends Box {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/* Utilities */
+	private Bitmap edges(Bitmap b) {
+		
+		/* width, height, stride */
+		int bw, bh, bs;
+		
+		bw = b.getWidth();
+		bh = b. getHeight();
+		bs = b.getRowBytes();
+		
+		Bitmap e = Bitmap.createBitmap(bw, bh, b.getConfig());
+		
+		for(int x=0; x<b.getWidth(); x++) 
+		{
+			for(int y=0; y<b.getHeight(); y++) 
+			{	
+				int pixel = b.getPixel(x, y);
+			}
+		}
+		
+		return e;
+	}
+	
 
 }

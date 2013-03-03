@@ -2,6 +2,8 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 
 public class InvertBox extends Box {
 
@@ -25,8 +27,40 @@ public class InvertBox extends Box {
 
 	@Override
 	public void function() {
-		// TODO Auto-generated method stub
-
+		
+		Bitmap src = null;
+		
+		if (this.getInput(0) == null) {
+			// do nothing
+		} else {
+			src = (Bitmap) this.getInput(0);
+			this.setOutput(src, 0);
+		}
+		
+		int width = src.getWidth();
+		int height = src.getHeight();
+		
+		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
+		
+		int A, R, G, B;
+		int pixel_color;
+		
+		for(int x=0; x<src.getWidth(); x++) 
+		{
+			for(int y=0; y<src.getHeight(); y++) 
+			{	
+				pixel_color = src.getPixel(x, y);
+				A = Color.alpha(pixel_color);
+				
+				R = 255 - Color.red(pixel_color);
+				G = 255 - Color.green(pixel_color);
+				B = 255 - Color.blue(pixel_color);
+				
+				out.setPixel(x, y, Color.argb(A, R, G, B));
+			}
+		}		
+		
+		this.setOutput(out, 0);
 	}
 
 	@Override
