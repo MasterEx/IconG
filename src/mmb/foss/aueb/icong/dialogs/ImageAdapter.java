@@ -11,10 +11,13 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter
 {
 	Context mContext ;
-	Uri[] mUrls = FileManager.getAllImagesFromDir("icong/");
+	Uri[] mUrls;
+	FileManager fileMngr;
 	public ImageAdapter(Context context)
 	{
 		mContext = context ;
+		fileMngr = new FileManager();
+		mUrls = fileMngr.getAllImagesFromDir();
 	}
 
 	@Override
