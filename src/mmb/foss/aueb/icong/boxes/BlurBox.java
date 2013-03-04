@@ -3,6 +3,7 @@ package mmb.foss.aueb.icong.boxes;
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 
 public class BlurBox extends Box {
@@ -49,7 +50,7 @@ public class BlurBox extends Box {
 		
 		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
 		int tl, tm, tr, ml, mm, mr, bl, bm , br;
-		int composite;
+		int compR, compG, compB, A;
 		
 		for(int y=0; y<height; y++)
 		{
@@ -97,10 +98,21 @@ public class BlurBox extends Box {
 				else
 					br = 0;
 				
-				composite = tl + (2*tm) + tr + (2*ml) + (4*mm) + (2*mr) + bl + (2*bm) + br;
-				composite = composite/16;
+				compR = Color.red(tl) + (2*Color.red(tm)) + Color.red(tr) + (2*Color.red(ml)) + 
+						(4*Color.red(mm)) + (2*Color.red(mr)) + Color.red(bl) + (2*Color.red(bm)) + Color.red(br);
+				compR = compR/16;
 				
-				out.setPixel(x, y, composite);
+				compG = Color.green(tl) + (2*Color.green(tm)) + Color.green(tr) + (2*Color.green(ml)) + 
+						(4*Color.green(mm)) + (2*Color.green(mr)) + Color.green(bl) + (2*Color.green(bm)) + Color.green(br);
+				compG = compR/16;
+				
+				compB = Color.blue(tl) + (2*Color.blue(tm)) + Color.blue(tr) + (2*Color.blue(ml)) + 
+						(4*Color.blue(mm)) + (2*Color.blue(mr)) + Color.blue(bl) + (2*Color.blue(bm)) + Color.blue(br);
+				compB = compR/16;
+				
+				A = Color.alpha(mm);
+				
+				out.setPixel(x, y, Color.argb(A, compR, compG, compB));
 			}
 		}
 		
