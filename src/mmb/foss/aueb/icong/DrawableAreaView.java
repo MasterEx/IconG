@@ -388,6 +388,7 @@ public class DrawableAreaView extends View {
 
 	private void deleteBox(Box box2del) {
 		boxes.remove(box2del);
+		SavedState.removeBox(box2del);
 		removeLines(box2del);
 	}
 
@@ -398,12 +399,14 @@ public class DrawableAreaView extends View {
 				Box otherBox = line[1].getBox();
 				int otherButton = line[1].getButton();
 				lines.remove(line);
+				SavedState.removeLine(line);
 				otherBox.unsetButtonPressed(otherButton);
 				break;
 			} else if (line[1].equals(pair)) {
 				Box otherBox = line[0].getBox();
 				int otherButton = line[0].getButton();
 				lines.remove(line);
+				SavedState.removeLine(line);
 				otherBox.unsetButtonPressed(otherButton);
 				break;
 			}
