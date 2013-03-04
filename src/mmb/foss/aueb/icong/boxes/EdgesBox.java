@@ -55,32 +55,32 @@ public class EdgesBox extends Box {
 		{
 			for(int x=0; x<width; x++)
 			{
-				if(x!=0 && y!=0)
+				if(x>0 && y>0)
 					tl = src.getPixel(x-1, y-1);
 				else
 					tl = 0;
 				
-				if(y!=0)
+				if(y>0)
 					tm = src.getPixel(x, y-1);
 				else
 					tm = 0;
 				
-				if(x!=width-1 && y!=0)
+				if(x<width-1 && y>0)
 					tr = src.getPixel(x+1, y-1);
 				else 
 					tr = 0;
 				
-				if(x!=0 && y!=height-1)
+				if(x>0 && y<height-1)
 					bl = src.getPixel(x-1, y+1);
 				else 
 					bl = 0;
 				
-				if(y!=height-1)
+				if(y<height-1)
 					bm = src.getPixel(x, y+1);
 				else
 					bm = 0;
 				
-				if(x!=width-1 && y!=height-1)
+				if(x<width-1 && y<height-1)
 					br = src.getPixel(x+1, y+1);
 				else
 					br = 0;
