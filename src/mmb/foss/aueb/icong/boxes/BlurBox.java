@@ -35,38 +35,77 @@ public class BlurBox extends Box {
 		
 		if(this.getOutput(0) != null)
 			return;
-		
+	
 		Bitmap src = null;
-		Float size;
 		
-		if (this.getInput(0) == null || this.getInput(1) == null) {
+		if (this.getInput(0) == null) {
 			return;
 		} else {
-			
 			src = (Bitmap) this.getInput(0);
-			size = (Float) this.getInput(1);
 		}
 		
-		float radius;
-		int samples;
+		int width = src.getWidth();
+		int height = src.getHeight();
+		
+		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
+		int tl, tm, tr, ml, mm, mr, bl, bm , br;
+		int composite;
+		
+		for(int y=0; y<height; y++)
+		{
+			for(int x=0; x<width; x++)
+			{
+				if(x>0 && y>0)
+					tl = src.getPixel(x-1, y-1);
+				else
+					tl = 0;
+				
+				if(y>0)
+					tm = src.getPixel(x, y-1);
+				else
+					tm = 0;
+				
+				if(x<width-1 && y>0)
+					tr = src.getPixel(x+1, y-1);
+				else 
+					tr = 0;
+				
+				if(x>0)
+					ml = src.getPixel(x-1, y);
+				else 
+					ml = 0;
+				
+				mm = src.getPixel(x, y);
+				
+				if(x<width-1)
+					mr = src.getPixel(x+1, y);
+				else 
+					mr = 0;
+				
+				if(x>0 && y<height-1)
+					bl = src.getPixel(x-1, y+1);
+				else 
+					bl = 0;
+				
+				if(y<height-1)
+					bm = src.getPixel(x, y+1);
+				else
+					bm = 0;
+				
+				if(x<width-1 && y<height-1)
+					br = src.getPixel(x+1, y+1);
+				else
+					br = 0;
+				
+				composite = tl + (2*tm) + tr + (2*ml) + (4*mm) + (2*mr) + bl + (2*bm) + br;
+				composite = composite/16;
+				
+				out.setPixel(x, y, composite);
+			}
+		}
+		
+		this.setOutput(out, 0);
 
-	}
-	
-	private double getSampleWeight(int rad, int p, int q) {
-		
-		return Math.pow(Math.E, ((int)(p-q))/(2.0*rad*rad));
-	}
-	
-	private int g(int p, int[] samples, int rad) {
-		
-		int s1 = 0;
-		
-		for(int i=0; i<samples.length; i++) 
-		{	
-			s1 += getSampleWeight(rad, p, samples[i]);
-		}
-		
-		return 0;
 	}
 
 	@Override

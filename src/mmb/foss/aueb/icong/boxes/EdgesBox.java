@@ -86,7 +86,6 @@ public class EdgesBox extends Box {
 					br = 0;
 				
 				composite = tl + (2*tm) + tr - bl - (2*bm) -br;
-				composite = composite/8;
 				
 				out.setPixel(x, y, composite);
 			}
@@ -100,27 +99,6 @@ public class EdgesBox extends Box {
 	public void showDialog(Context context) {
 		// TODO Auto-generated method stub
 
-	}
-
-	/* Utilities */
-	private Bitmap edges(Bitmap b) {
-
-		/* width, height, stride */
-		int bw, bh, bs;
-
-		bw = b.getWidth();
-		bh = b.getHeight();
-		bs = b.getRowBytes();
-
-		Bitmap e = Bitmap.createBitmap(bw, bh, b.getConfig());
-
-		for (int x = 0; x < b.getWidth(); x++) {
-			for (int y = 0; y < b.getHeight(); y++) {
-				int pixel = b.getPixel(x, y);
-			}
-		}
-
-		return e;
 	}
 
 }
