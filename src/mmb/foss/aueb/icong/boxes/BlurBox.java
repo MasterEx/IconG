@@ -104,11 +104,11 @@ public class BlurBox extends Box {
 				
 				compG = Color.green(tl) + (2*Color.green(tm)) + Color.green(tr) + (2*Color.green(ml)) + 
 						(4*Color.green(mm)) + (2*Color.green(mr)) + Color.green(bl) + (2*Color.green(bm)) + Color.green(br);
-				compG = compR/16;
+				compG = compG/16;
 				
 				compB = Color.blue(tl) + (2*Color.blue(tm)) + Color.blue(tr) + (2*Color.blue(ml)) + 
 						(4*Color.blue(mm)) + (2*Color.blue(mr)) + Color.blue(bl) + (2*Color.blue(bm)) + Color.blue(br);
-				compB = compR/16;
+				compB = compB/16;
 				
 				A = Color.alpha(mm);
 				

@@ -44,58 +44,73 @@ public class EdgesBox extends Box {
 		
 		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
 		int tl, tm, tr, bl, bm , br, pix;
-		int composite;
+		int compR, compG, compB;
 		int A, R, G, B;
+		int temp, gray;
 		
-		/*float[] matrix = {
-				1, 2, 1,
-				0, 0, 0,
-				-1, -2, -1,
-			};*/
+		Bitmap tempB = Bitmap.createBitmap(width, height, src.getConfig());
+		
+		//if(!isGrayscale(src)) {
+			
+			for(int y=0; y<height; y++)
+			{
+				for(int x=0; x<width; x++)
+				{
+					temp = src.getPixel(x, y);
+					A = Color.alpha(temp);
+					R = Color.red(temp);
+					G = Color.green(temp);
+					B = Color.blue(temp);
+					
+					gray = (R + G + B) / 3;
+					
+					tempB.setPixel(x, y, Color.argb(A, R, G, B));
+				}
+			}
+		//}
 		
 		for(int y=0; y<height; y++)
 		{
 			for(int x=0; x<width; x++)
 			{
 				if(x>0 && y>0)
-					tl = src.getPixel(x-1, y-1);
+					tl = tempB.getPixel(x-1, y-1);
 				else
 					tl = 0;
 				
 				if(y>0)
-					tm = src.getPixel(x, y-1);
+					tm = tempB.getPixel(x, y-1);
 				else
 					tm = 0;
 				
 				if(x<width-1 && y>0)
-					tr = src.getPixel(x+1, y-1);
+					tr = tempB.getPixel(x+1, y-1);
 				else 
 					tr = 0;
 				
 				if(x>0 && y<height-1)
-					bl = src.getPixel(x-1, y+1);
+					bl = tempB.getPixel(x-1, y+1);
 				else 
 					bl = 0;
 				
 				if(y<height-1)
-					bm = src.getPixel(x, y+1);
+					bm = tempB.getPixel(x, y+1);
 				else
 					bm = 0;
 				
 				if(x<width-1 && y<height-1)
-					br = src.getPixel(x+1, y+1);
+					br = tempB.getPixel(x+1, y+1);
 				else
 					br = 0;
 				
-				composite = tl + (2*tm) + tr - bl - (2*bm) -br;
-				pix = src.getPixel(x, y);
+				compR = Color.red(tl) + (2*Color.red(tm)) + Color.red(tr) - Color.red(bl) - (2*Color.red(bm)) - Color.red(br);
+				compB = Color.blue(tl) + (2*Color.blue(tm)) + Color.blue(tr) - Color.blue(bl) - (2*Color.blue(bm)) - Color.blue(br);
+				compG = Color.green(tl) + (2*Color.green(tm)) + Color.green(tr) - Color.green(bl) - (2*Color.green(bm)) - Color.green(br);
 				
+				pix = tempB.getPixel(x, y);
 				A = Color.alpha(pix);
-				R = Color.red(composite);
-				G = Color.green(composite);
-				B = Color.blue(composite);
 				
-				out.setPixel(x, y, Color.argb(A, R, G, B));
+				out.setPixel(x, y, Color.argb(A, compR, compG, compB));
 			}
 		}
 		
