@@ -2,6 +2,7 @@ package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 public class BlurBox extends Box {
@@ -36,14 +37,14 @@ public class BlurBox extends Box {
 			return;
 		
 		Bitmap src = null;
+		Float size;
 		
 		if (this.getInput(0) == null || this.getInput(1) == null) {
 			return;
 		} else {
-			Bi
-			yaw += (Integer) this.getInput(1);
-			Log.e("yoooooolo", "" + yaw);
-			this.setOutput(yaw, 0);
+			
+			src = (Bitmap) this.getInput(0);
+			
 		}
 
 	}

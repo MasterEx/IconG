@@ -41,7 +41,7 @@ public class MixBox extends Box {
 		
 		Bitmap src1 = null;
 		Bitmap src2 = null;
-		double bias = 0.5;
+		double bias = 127.5;
 		
 		if (this.getInput(0) == null || this.getInput(1) == null) {
 			return ;
@@ -53,9 +53,11 @@ public class MixBox extends Box {
 			if(this.getInput(2) != null)
 				bias = (Double) this.getInput(2);
 			
-			if(bias>1.0)
+			if(bias>255)
 				return;
 		}
+		
+		bias = bias/255.0;
 		
 		int width = src1.getWidth();
 		int height = src1.getHeight();
