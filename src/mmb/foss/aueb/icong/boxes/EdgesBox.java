@@ -43,7 +43,7 @@ public class EdgesBox extends Box {
 		int height = src.getHeight();
 		
 		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
-		int tl, tm, tr, bl, bm , br;
+		int tl, tm, tr, bl, bm , br, pix;
 		int composite;
 		int A, R, G, B;
 		
@@ -88,8 +88,9 @@ public class EdgesBox extends Box {
 					br = 0;
 				
 				composite = tl + (2*tm) + tr - bl - (2*bm) -br;
+				pix = src.getPixel(x, y);
 				
-				A = Color.alpha(src);
+				A = Color.alpha(pix);
 				R = Color.red(composite);
 				G = Color.green(composite);
 				B = Color.blue(composite);
