@@ -44,9 +44,29 @@ public class BlurBox extends Box {
 		} else {
 			
 			src = (Bitmap) this.getInput(0);
-			
+			size = (Float) this.getInput(1);
 		}
+		
+		float radius;
+		int samples;
 
+	}
+	
+	private double getSampleWeight(int rad, int p, int q) {
+		
+		return Math.pow(Math.E, ((int)(p-q))/(2.0*rad*rad));
+	}
+	
+	private int g(int p, int[] samples, int rad) {
+		
+		int s1 = 0;
+		
+		for(int i=0; i<samples.length; i++) 
+		{	
+			s1 += getSampleWeight(rad, p, samples[i]);
+		}
+		
+		return 0;
 	}
 
 	@Override

@@ -26,14 +26,73 @@ public class EdgesBox extends Box {
 
 	@Override
 	public void function() {
-		// TODO Auto-generated method stub
+		
+		if(this.getOutput(0) != null)
+			return;
+	
+		Bitmap src = null;
+		
 		if (this.getInput(0) == null) {
-			// do nothing
+			return;
 		} else {
-			Bitmap in0 = (Bitmap) this.getInput(0);
-
-			this.setOutput(in0, 0);
+			src = (Bitmap) this.getInput(0);
 		}
+		
+		int width = src.getWidth();
+		int height = src.getHeight();
+		
+		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
+		int tl, tm, tr, bl, bm , br;
+		int composite;
+		
+		/*float[] matrix = {
+				1, 2, 1,
+				0, 0, 0,
+				-1, -2, -1,
+			};*/
+		
+		for(int y=0; y<height; y++)
+		{
+			for(int x=0; x<width; x++)
+			{
+				if(x!=0 && y!=0)
+					tl = src.getPixel(x-1, y-1);
+				else
+					tl = 0;
+				
+				if(y!=0)
+					tm = src.getPixel(x, y-1);
+				else
+					tm = 0;
+				
+				if(x!=width && y!=0)
+					tr = src.getPixel(x+1, y-1);
+				else 
+					tr = 0;
+				
+				if(x!=0 && y!=height)
+					bl = src.getPixel(x-1, y+1);
+				else 
+					bl = 0;
+				
+				if(y!=height)
+					bm = src.getPixel(x, y+1);
+				else
+					bm = 0;
+				
+				if(x!=width && y!=height)
+					br = src.getPixel(x+1, y+1);
+				else
+					br = 0;
+				
+				composite = tl + (2*tm) + tr - bl - (2*bm) -br;
+				
+				out.setPixel(x, y, composite);
+			}
+		}
+		
+		this.setOutput(out, 0);
+		
 	}
 
 	@Override
