@@ -31,12 +31,16 @@ public class BlurBox extends Box {
 
 	@Override
 	public void function() {
-		Log.e("input 1", "" + this.getInput(0));
-		Log.e("input 2", "" + this.getInput(1));
-		if (this.getInput(1) == null || this.getInput(1) == null) {
-			// do nothing
+		
+		if(this.getOutput(0) != null)
+			return;
+		
+		Bitmap src = null;
+		
+		if (this.getInput(0) == null || this.getInput(1) == null) {
+			return;
 		} else {
-			int yaw = (Integer) this.getInput(0);
+			Bi
 			yaw += (Integer) this.getInput(1);
 			Log.e("yoooooolo", "" + yaw);
 			this.setOutput(yaw, 0);
