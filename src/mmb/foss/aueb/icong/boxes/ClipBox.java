@@ -36,7 +36,7 @@ public class ClipBox extends Box {
 			return;
 		
 		Bitmap src = null;
-		int threshold = 170;
+		int threshold =170;
 		
 		if (this.getInput(0) == null) {
 			return ;

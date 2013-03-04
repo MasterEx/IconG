@@ -1,15 +1,19 @@
 package mmb.foss.aueb.icong.boxes;
 
 import mmb.foss.aueb.icong.R;
+import mmb.foss.aueb.icong.dialogs.ImageAdapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ImageFileBox extends Box {
-
+	private boolean hasInput = false ;
 	public ImageFileBox(Context context) {
 		super(context, R.drawable.image_file);
 		buttonX = new int[2][2];
@@ -35,36 +39,58 @@ public class ImageFileBox extends Box {
 	}
 
 	@Override
-	public void showDialog(Context context) {
+	public void showDialog(final Context context) {
 		Dialog dialog = new Dialog(context);
-		dialog.setContentView(R.layout.dialog);
-		dialog.setTitle("Yaw dialog test");
+		dialog.setContentView(R.layout.image_file_dialog_choose);
+		dialog.setTitle("Get/Set?");
 		dialog.setCancelable(true);
-		// there are a lot of settings, for dialog, check them all out!
-		// set up text
-		TextView text = (TextView) dialog.findViewById(R.id.TextView01);
-		text.setText("yaw yaw yaw yaw \n yaw yaw yaw yaw yaw"
-				+ "\nyaw yaw yaw yaw yaw yaw yaw yaw"
-				+ "\nyaw yaw yaw yaw yaw yaw yaw yaw"
-				+ "\nyaw yaw yaw yaw yaw yaw yaw yaw"
-				+ "\nyaw yaw yaw yaw yaw yaw yaw yaw"
-				+ "\nyaw yaw yaw yaw yaw yaw yaw yaw"
-				+ "\nyaw yaw yaw yaw yaw yaw yaw yaw");
-
-		// set up image view
-		ImageView img = (ImageView) dialog.findViewById(R.id.ImageView01);
-		img.setImageResource(R.drawable.image_file);
-		Button button = (Button) dialog.findViewById(R.id.Button01);
-		button.setOnClickListener(new View.OnClickListener() {
+		
+		
+		Button buttonGet = (Button) dialog.findViewById(R.id.image_file_dialog_choose_btnGet);
+		buttonGet.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				// Toast.makeText(getContext(), "Yawwwwwwwwwlo",
-				// Toast.LENGTH_LONG);
+				//TODO create new dialog
+				openGallery(context);
+			}
+
+		});
+		Button buttonSet = (Button) dialog.findViewById(R.id.image_file_dialog_choose_btnSet);
+		buttonSet.setOnClickListener(new View.OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				// TODO Auto-generated method stub
+				setInput(false);
 			}
 		});
 		dialog.show();
 
 	}
+	private void openGallery(Context context)
+	{
+		Dialog newDialog = new Dialog(context);
+		newDialog.setContentView(R.layout.image_file_dialog_get);
+		newDialog.setTitle("Choose");
+		newDialog.setCancelable(true);
+		Gallery g = (Gallery) newDialog.findViewById(R.id.gallery1);
+		g.setAdapter(new ImageAdapter(context));
+		g.setFadingEdgeLength(40);
+		newDialog.show();
+		
+	}
 
+	public boolean hasInput()
+	{
+		return hasInput;
+	}
+
+	public void setInput(boolean hasInput)
+	{
+		this.hasInput = hasInput;
+	}
 }
+	

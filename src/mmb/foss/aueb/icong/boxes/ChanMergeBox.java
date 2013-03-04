@@ -57,7 +57,7 @@ public class ChanMergeBox extends Box {
 		
 		Bitmap out = Bitmap.createBitmap(width, height, src1.getConfig());
 		
-		int pix1, pix2, pix3, A;
+		int pix1, pix2, pix3, A,R,G,B;
 		
 		for(int x=0; x<width; x++) 
 		{
@@ -67,9 +67,12 @@ public class ChanMergeBox extends Box {
 				pix2 = src2.getPixel(x, y);
 				pix3 = src3.getPixel(x, y);
 				
-				A = Color.alpha(pix1);
+				A = Color.alpha(pix2);
+				R = Color.red(pix1);
+				G = Color.green(pix2);
+				B = Color.blue(pix3);
 				
-				out.setPixel(x, y, Color.argb(A, pix1, pix2, pix3));
+				out.setPixel(x, y, Color.argb(A, R, G, B));
 			}
 		}
 		

@@ -25,9 +25,7 @@ public class ScreenBox extends Box {
 	public void function() {
 		// TODO Auto-generated method stub
 		Log.e("Screen", "" + this.getInput(0));
-		if (this.getInput(0) != null)
-			this.setOutput(this.getInput(0), 0);
-		Log.e("Screen", "" + this.getInput(0));
+		
 	}
 
 	@Override
