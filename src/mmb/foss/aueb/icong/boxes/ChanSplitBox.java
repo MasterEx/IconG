@@ -4,6 +4,7 @@ import mmb.foss.aueb.icong.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 
 public class ChanSplitBox extends Box {
 
@@ -38,7 +39,7 @@ public class ChanSplitBox extends Box {
 		
 		if(this.getOutput(0) != null && this.getOutput(1) != null && this.getOutput(2) != null)
 			return;
-		
+		Log.e("started","yiiiiiiiiiiiihA");
 		Bitmap src = null;
 
 		if (this.getInput(0) == null) {
@@ -56,23 +57,26 @@ public class ChanSplitBox extends Box {
 		Bitmap out2 = Bitmap.createBitmap(width, height, src.getConfig());
 		Bitmap out3 = Bitmap.createBitmap(width, height, src.getConfig());
 		
-		int pix, R, G, B;
+		int pix, A,R, G, B;
 		
 		for(int x=0; x<width; x++)
 		{
 			for(int y=0; y<height; y++)
 			{
 				pix = src.getPixel(x, y);
-				
+				A =Color.alpha(pix);
 				R = Color.red(pix);
 				G = Color.green(pix);
 				B = Color.blue(pix);
 				
-				out1.setPixel(x, y, R);
-				out2.setPixel(x, y, G);
-				out3.setPixel(x, y, B);
+				out1.setPixel(x, y, Color.argb(A, R, 0, 0));
+				out2.setPixel(x, y, Color.argb(A, 0, G, 0));
+				out3.setPixel(x, y, Color.argb(A, 0, 0, B));
 			}
 		}
+		Log.e("out1",""+out1.toString());
+		Log.e("out2",""+out2.toString());
+		Log.e("out3",""+out3.toString());
 
 		this.setOutput(out1, 0);
 		this.setOutput(out2, 1);
