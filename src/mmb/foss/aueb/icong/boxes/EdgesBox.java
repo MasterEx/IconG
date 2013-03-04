@@ -3,6 +3,7 @@ package mmb.foss.aueb.icong.boxes;
 import mmb.foss.aueb.icong.R;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 public class EdgesBox extends Box {
 
@@ -44,6 +45,7 @@ public class EdgesBox extends Box {
 		Bitmap out = Bitmap.createBitmap(width, height, src.getConfig());
 		int tl, tm, tr, bl, bm , br;
 		int composite;
+		int A, R, G, B;
 		
 		/*float[] matrix = {
 				1, 2, 1,
@@ -87,7 +89,12 @@ public class EdgesBox extends Box {
 				
 				composite = tl + (2*tm) + tr - bl - (2*bm) -br;
 				
-				out.setPixel(x, y, composite);
+				A = Color.alpha(src);
+				R = Color.red(composite);
+				G = Color.green(composite);
+				B = Color.blue(composite);
+				
+				out.setPixel(x, y, Color.argb(A, R, G, B));
 			}
 		}
 		
