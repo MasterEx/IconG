@@ -86,6 +86,7 @@ public class EdgesBox extends Box {
 					br = 0;
 				
 				composite = tl + (2*tm) + tr - bl - (2*bm) -br;
+				composite = composite/8;
 				
 				out.setPixel(x, y, composite);
 			}
